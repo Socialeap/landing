@@ -105,7 +105,7 @@
     .flip-card-container {
       perspective: 1500px;
       width: 100%;
-      height: 220px; /* Restored Business card-like aspect ratio */
+      height: 220px;
     }
     .flipper {
       position: relative;
@@ -306,7 +306,9 @@
           e.preventDefault();
           const id = a.getAttribute('data-target');
           scrollToId(id);
-          history.pushState(null, null, '#' + id);
+          try {
+            history.pushState(null, null, '#' + id);
+          } catch (e) {}
         });
       });
 
