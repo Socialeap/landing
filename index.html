@@ -46,25 +46,6 @@
     .glass-card-pro { background: rgba(107, 51, 255, 0.1); border-color: rgba(129, 140, 248, 0.25); }
     .glass-card-pro:hover { border-color: rgba(167, 139, 250, 0.5); }
 
-    /* New styles for the tweaked roadmap cards */
-    .roadmap-milestone-card {
-      background: rgba(20, 184, 166, 0.1); /* Teal background */
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(45, 212, 191, 0.2); /* Teal border */
-      transition: all 0.3s ease;
-    }
-    .roadmap-milestone-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      border-color: rgba(94, 234, 212, 0.5);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-    }
-    .roadmap-item.active .roadmap-milestone-card {
-      background: rgba(20, 184, 166, 0.2);
-      border-color: rgba(94, 234, 212, 0.5);
-      transform: scale(1.02);
-    }
-
     .colored-panel {
       background: rgba(46, 26, 104, 0.2);
       backdrop-filter: blur(16px);
@@ -79,19 +60,65 @@
     .modal-panel { background: rgba(23, 33, 62, 0.6); border: 1px solid rgba(129, 140, 248, 0.35); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
     .anchor-offset { scroll-margin-top: 120px; }
 
-    #jotform-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-      display: none; z-index: 50; overflow: auto;
-      -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+    /* New styles for Zig-Zag Timeline */
+    .timeline-container {
+      position: relative;
+      padding: 2rem 0;
     }
-    #jotform-panel {
-      position: absolute; left: 50%; transform: translateX(-50%);
-      border-radius: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.45);
-      width: min(880px, 94vw);
+    .timeline-container::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      background-color: rgba(129, 140, 248, 0.25);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1.5px;
+      border-radius: 3px;
     }
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+    }
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      right: -14px;
+      background: linear-gradient(to bottom right, #818cf8, #60a5fa);
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      top: 15px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .timeline-item.left {
+      left: 0;
+    }
+    .timeline-item.right {
+      left: 50%;
+    }
+    .timeline-item.right::after {
+      left: -11px;
+    }
+    .timeline-item-content {
+      transition: all 0.3s ease;
+    }
+    .timeline-item-content:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .timeline-item.active .timeline-item-content {
+       border-color: rgba(167, 139, 250, 0.5);
+       background: rgba(107, 51, 255, 0.2);
+    }
+
+    #jotform-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 50; overflow: auto; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+    #jotform-panel { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.45); width: min(880px, 94vw); }
     #jotform-panel .frame-wrap { max-height: calc(100vh - 64px); }
   </style>
 </head>
@@ -158,30 +185,12 @@
       <section id="features" class="anchor-offset mt-36 lg:mt-48">
         <h2 class="text-2xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-shadow">Create Your Perfect Signature</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg">
-            <h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg> Intuitive Signature Builder</h3>
-            <p class="text-sm text-gray-200">Our user-friendly builder provides a real-time preview as you craft the perfect signature, making the design process a breeze.</p>
-          </div>
-          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg">
-            <h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg> Deep Customization</h3>
-            <p class="text-sm text-gray-200">Control every detail, from brand colors and fonts to logos, social icons, and custom call-to-action buttons.</p>
-          </div>
-          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg">
-            <h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0l5-5 5 5m-10 0v2m10-2v2" /></svg> Multiple Signature Management</h3>
-            <p class="text-sm text-gray-200">Easily create, manage, and switch between multiple signatures for different roles or campaigns from a single dashboard.</p>
-          </div>
-          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg">
-            <h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> One-Click Copy & Paste</h3>
-            <p class="text-sm text-gray-200">Our secure copy process ensures your signature pastes perfectly into any email client, avoiding broken formatting issues.</p>
-          </div>
-          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg">
-            <h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> Guaranteed Compatibility</h3>
-            <p class="text-sm text-gray-200">Signatures are built to be compatible and responsive, ensuring they look perfect in Gmail, Outlook, Apple Mail, and more.</p>
-          </div>
-          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg">
-            <h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg> Mini-Game Challenges</h3>
-            <p class="text-sm text-gray-200">Test your mental acuity with fun, built-in games inside the app. Compete with others and win credits and rewards!</p>
-          </div>
+          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg"><h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg> Intuitive Signature Builder</h3><p class="text-sm text-gray-200">Our user-friendly builder provides a real-time preview as you craft the perfect signature, making the design process a breeze.</p></div>
+          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg"><h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg> Deep Customization</h3><p class="text-sm text-gray-200">Control every detail, from brand colors and fonts to logos, social icons, and custom call-to-action buttons.</p></div>
+          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg"><h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0l5-5 5 5m-10 0v2m10-2v2" /></svg> Multiple Signature Management</h3><p class="text-sm text-gray-200">Easily create, manage, and switch between multiple signatures for different roles or campaigns from a single dashboard.</p></div>
+          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg"><h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> One-Click Copy & Paste</h3><p class="text-sm text-gray-200">Our secure copy process ensures your signature pastes perfectly into any email client, avoiding broken formatting issues.</p></div>
+          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg"><h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> Guaranteed Compatibility</h3><p class="text-sm text-gray-200">Signatures are built to be compatible and responsive, ensuring they look perfect in Gmail, Outlook, Apple Mail, and more.</p></div>
+          <div class="glass-card p-5 sm:p-6 rounded-xl shadow-lg"><h3 class="text-base sm:text-xl font-bold mb-3 text-sky-400 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg> Mini-Game Challenges</h3><p class="text-sm text-gray-200">Test your mental acuity with fun, built-in games inside the app. Compete with others and win credits and rewards!</p></div>
         </div>
       </section>
 
@@ -239,68 +248,62 @@
         <p class="text-center text-blue-100 mb-10">What’s shipping next — and when.</p>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           <div class="lg:col-span-5">
-            <ol class="relative border-s border-teal-500/30 ps-6">
-              <li class="roadmap-item mb-6 cursor-pointer" data-target="rm-2025-03">
-                <div class="absolute -start-3.5 mt-2.5"><span class="block w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow ring-2 ring-white/10"></span></div>
-                <div class="roadmap-milestone-card rounded-xl p-3 flex items-center gap-4">
-                  <div class="flex-shrink-0 text-center bg-teal-900/50 rounded-lg p-2 w-20">
-                    <span class="text-teal-300 font-bold text-2xl">MAR</span>
-                    <span class="block text-teal-400/80 text-sm font-semibold">'25</span>
+            <div class="timeline-container">
+              <div class="timeline-item left roadmap-item" data-target="rm-2025-03" tabindex="0" role="button">
+                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl">
+                  <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
+                    <span class="text-indigo-300 font-bold text-2xl">MAR</span>
+                    <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-teal-200">Basic Email Signature Builder</h3>
+                  <h3 class="font-semibold text-indigo-200 text-left">Basic Email Signature Builder</h3>
                 </div>
-              </li>
-              <li class="roadmap-item mb-6 cursor-pointer" data-target="rm-2025-05">
-                <div class="absolute -start-3.5 mt-2.5"><span class="block w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow ring-2 ring-white/10"></span></div>
-                <div class="roadmap-milestone-card rounded-xl p-3 flex items-center gap-4">
-                  <div class="flex-shrink-0 text-center bg-teal-900/50 rounded-lg p-2 w-20">
-                    <span class="text-teal-300 font-bold text-2xl">MAY</span>
-                    <span class="block text-teal-400/80 text-sm font-semibold">'25</span>
+              </div>
+              <div class="timeline-item right roadmap-item" data-target="rm-2025-05" tabindex="0" role="button">
+                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl">
+                  <h3 class="font-semibold text-indigo-200 text-right">Dynamic Signature Builder</h3>
+                  <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
+                    <span class="text-indigo-300 font-bold text-2xl">MAY</span>
+                    <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-teal-200">Dynamic Signature Builder</h3>
                 </div>
-              </li>
-              <li class="roadmap-item mb-6 cursor-pointer" data-target="rm-2025-07">
-                <div class="absolute -start-3.5 mt-2.5"><span class="block w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow ring-2 ring-white/10"></span></div>
-                <div class="roadmap-milestone-card rounded-xl p-3 flex items-center gap-4">
-                  <div class="flex-shrink-0 text-center bg-teal-900/50 rounded-lg p-2 w-20">
-                    <span class="text-teal-300 font-bold text-2xl">JUL</span>
-                    <span class="block text-teal-400/80 text-sm font-semibold">'25</span>
+              </div>
+              <div class="timeline-item left roadmap-item" data-target="rm-2025-07" tabindex="0" role="button">
+                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl">
+                  <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
+                    <span class="text-indigo-300 font-bold text-2xl">JUL</span>
+                    <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-teal-200">Engagement Features</h3>
+                  <h3 class="font-semibold text-indigo-200 text-left">Engagement Features</h3>
                 </div>
-              </li>
-              <li class="roadmap-item mb-6 cursor-pointer" data-target="rm-2025-08">
-                <div class="absolute -start-3.5 mt-2.5"><span class="block w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow ring-2 ring-white/10"></span></div>
-                <div class="roadmap-milestone-card rounded-xl p-3 flex items-center gap-4">
-                  <div class="flex-shrink-0 text-center bg-teal-900/50 rounded-lg p-2 w-20">
-                    <span class="text-teal-300 font-bold text-2xl">AUG</span>
-                    <span class="block text-teal-400/80 text-sm font-semibold">'25</span>
+              </div>
+              <div class="timeline-item right roadmap-item" data-target="rm-2025-08" tabindex="0" role="button">
+                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl">
+                   <h3 class="font-semibold text-indigo-200 text-right">Added Customization</h3>
+                   <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
+                    <span class="text-indigo-300 font-bold text-2xl">AUG</span>
+                    <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-teal-200">Added Customization</h3>
                 </div>
-              </li>
-              <li class="roadmap-item mb-6 cursor-pointer" data-target="rm-2025-09">
-                <div class="absolute -start-3.5 mt-2.5"><span class="block w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow ring-2 ring-white/10"></span></div>
-                <div class="roadmap-milestone-card rounded-xl p-3 flex items-center gap-4">
-                  <div class="flex-shrink-0 text-center bg-teal-900/50 rounded-lg p-2 w-20">
-                    <span class="text-teal-300 font-bold text-2xl">SEP</span>
-                    <span class="block text-teal-400/80 text-sm font-semibold">'25</span>
+              </div>
+              <div class="timeline-item left roadmap-item" data-target="rm-2025-09" tabindex="0" role="button">
+                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl">
+                  <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
+                    <span class="text-indigo-300 font-bold text-2xl">SEP</span>
+                    <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-teal-200">Signature Spotlights</h3>
+                  <h3 class="font-semibold text-indigo-200 text-left">Signature Spotlights</h3>
                 </div>
-              </li>
-              <li class="roadmap-item mb-6 cursor-pointer" data-target="rm-2025-12">
-                <div class="absolute -start-3.5 mt-2.5"><span class="block w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow ring-2 ring-white/10"></span></div>
-                <div class="roadmap-milestone-card rounded-xl p-3 flex items-center gap-4">
-                  <div class="flex-shrink-0 text-center bg-teal-900/50 rounded-lg p-2 w-20">
-                    <span class="text-teal-300 font-bold text-2xl">DEC</span>
-                    <span class="block text-teal-400/80 text-sm font-semibold">'25</span>
+              </div>
+              <div class="timeline-item right roadmap-item" data-target="rm-2025-12" tabindex="0" role="button">
+                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl">
+                  <h3 class="font-semibold text-indigo-200 text-right">Directory Platform</h3>
+                  <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
+                    <span class="text-indigo-300 font-bold text-2xl">DEC</span>
+                    <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-teal-200">Directory Platform</h3>
                 </div>
-              </li>
-            </ol>
+              </div>
+            </div>
           </div>
           <div class="lg:col-span-7">
             <div class="colored-panel rounded-2xl p-5 sm:p-7 shadow-2xl">
@@ -311,10 +314,11 @@
               <div class="rm-panel hidden" id="rm-2025-09"><div class="grid sm:grid-cols-2 gap-6 items-center"><div><h3 class="text-2xl font-bold text-sky-300">Signature Spotlights</h3><p class="text-sm text-blue-100 mt-2">Curated gallery highlighting standout community Cards.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30">Target: 09/2025</span></div><div class="flex justify-center"><svg viewBox="0 0 240 160" class="w-full max-w-[340px] rounded-xl shadow-xl"><defs><linearGradient id="g5" x1="0" x2="1"><stop offset="0%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#60A5FA"/></linearGradient></defs><rect rx="18" width="240" height="160" fill="url(#g5)" opacity="0.18"/><rect x="32" y="32" width="176" height="96" rx="12" fill="#111827" opacity=".5"/><rect x="44" y="44" width="60" height="60" rx="10" fill="#60A5FA"/><rect x="112" y="48" width="80" height="10" rx="5" fill="#C7D2FE"/><rect x="112" y="66" width="72" height="8" rx="4" fill="#93C5FD"/><rect x="112" y="82" width="56" height="8" rx="4" fill="#93C5FD"/></svg></div></div></div>
               <div class="rm-panel hidden" id="rm-2025-12"><div class="grid sm:grid-cols-2 gap-6 items-center"><div><h3 class="text-2xl font-bold text-sky-300">Directory Platform</h3><p class="text-sm text-blue-100 mt-2">Discover people by tags and expertise in a searchable network of Cards.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30">Target: 12/2025</span></div><div class="flex justify-center"><svg viewBox="0 0 240 160" class="w-full max-w-[340px] rounded-xl shadow-xl"><defs><linearGradient id="g6" x1="0" x2="1"><stop offset="0%" stop-color="#14B8A6"/><stop offset="100%" stop-color="#60A5FA"/></linearGradient></defs><rect rx="18" width="240" height="160" fill="url(#g6)" opacity="0.18"/><circle cx="60" cy="80" r="18" fill="#60A5FA"/><circle cx="120" cy="56" r="18" fill="#8B5CF6"/><circle cx="180" cy="86" r="18" fill="#22D3EE"/><rect x="40" y="118" width="160" height="12" rx="6" fill="#93C5FD"/></svg></div></div></div>
             </div>
-            <p class="mt-4 text-xs text-blue-200/80">Tip: click a milestone on the left to preview its details.</p>
+            <p class="mt-4 text-xs text-blue-200/80">Tip: click a milestone to preview its details.</p>
           </div>
         </div>
       </section>
+
     </div>
   </main>
 
@@ -370,8 +374,6 @@
         items.forEach(li => {
           li.addEventListener('click', () => showPanel(li.getAttribute('data-target')));
           li.addEventListener('keydown', (e) => { if (e.key === 'Enter') showPanel(li.getAttribute('data-target')); });
-          li.setAttribute('tabindex', '0');
-          li.setAttribute('role', 'button');
         });
       }
     })();
