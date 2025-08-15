@@ -79,7 +79,7 @@
       border-radius: 3px;
     }
     .timeline-item {
-      padding: 4px 40px; /* Reduced vertical padding */
+      padding: 2px 40px; /* Reduced vertical padding */
       position: relative;
       width: 50%;
     }
@@ -91,7 +91,7 @@
       right: -14px;
       background: linear-gradient(to bottom right, #818cf8, #60a5fa);
       border: 4px solid rgba(255, 255, 255, 0.1);
-      top: 50%; /* Center the dot vertically */
+      top: 50%;
       transform: translateY(-50%);
       border-radius: 50%;
       z-index: 1;
@@ -103,15 +103,16 @@
     .timeline-item-content {
       transition: all 0.3s ease;
     }
-    .timeline-item-content:hover {
+    .timeline-item-content:hover,
+    .timeline-item.active .timeline-item-content {
       transform: scale(1.03);
       border-color: rgba(167, 139, 250, 0.5);
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      background: rgba(107, 51, 255, 0.2);
     }
-    .timeline-item.active .timeline-item-content {
-       border-color: rgba(167, 139, 250, 0.5);
-       background: rgba(107, 51, 255, 0.2);
-    }
+    /* This rule is removed to make the first card look the same as others on load */
+    /* .timeline-item.active .timeline-item-content { ... } */
+
 
     #jotform-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 50; overflow: auto; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
     #jotform-panel { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.45); width: min(880px, 94vw); }
@@ -243,7 +244,7 @@
         <h2 class="text-2xl sm:text-4xl font-bold text-center mb-2 text-shadow">Hello! Road Map</h2>
         <p class="text-center text-blue-100 mb-10">What’s shipping next — and when.</p>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-          <div class="lg:col-span-6">
+          <div class="lg:col-span-7">
             <div class="timeline-container">
               <div class="timeline-item left roadmap-item" data-target="rm-2025-03" tabindex="0" role="button">
                 <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap">
@@ -255,12 +256,12 @@
                 </div>
               </div>
               <div class="timeline-item right roadmap-item" data-target="rm-2025-05" tabindex="0" role="button">
-                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap">
+                <div class="timeline-item-content glass-card p-3 flex items-center justify-end gap-4 rounded-xl whitespace-nowrap">
+                  <h3 class="font-semibold text-indigo-200">Dynamic Signature Builder</h3>
                   <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
                     <span class="text-indigo-300 font-bold text-2xl">MAY</span>
                     <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-indigo-200">Dynamic Signature Builder</h3>
                 </div>
               </div>
               <div class="timeline-item left roadmap-item" data-target="rm-2025-07" tabindex="0" role="button">
@@ -273,12 +274,12 @@
                 </div>
               </div>
               <div class="timeline-item right roadmap-item" data-target="rm-2025-08" tabindex="0" role="button">
-                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap">
+                <div class="timeline-item-content glass-card p-3 flex items-center justify-end gap-4 rounded-xl whitespace-nowrap">
+                   <h3 class="font-semibold text-indigo-200">Added Customization</h3>
                    <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
                     <span class="text-indigo-300 font-bold text-2xl">AUG</span>
                     <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                  <h3 class="font-semibold text-indigo-200">Added Customization</h3>
                 </div>
               </div>
               <div class="timeline-item left roadmap-item" data-target="rm-2025-09" tabindex="0" role="button">
@@ -291,18 +292,18 @@
                 </div>
               </div>
               <div class="timeline-item right roadmap-item" data-target="rm-2025-12" tabindex="0" role="button">
-                <div class="timeline-item-content glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap">
+                <div class="timeline-item-content glass-card p-3 flex items-center justify-end gap-4 rounded-xl whitespace-nowrap">
+                   <h3 class="font-semibold text-indigo-200">Directory Platform</h3>
                   <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20">
                     <span class="text-indigo-300 font-bold text-2xl">DEC</span>
                     <span class="block text-indigo-400/80 text-sm font-semibold">'25</span>
                   </div>
-                   <h3 class="font-semibold text-indigo-200">Directory Platform</h3>
                 </div>
               </div>
             </div>
           </div>
-          <div class="lg:col-span-6">
-            <div class="colored-panel rounded-2xl p-5 sm:p-7 shadow-2xl">
+          <div class="lg:col-span-5">
+            <div class="colored-panel rounded-2xl p-8 sm:p-10 shadow-2xl">
               <div class="rm-panel" id="rm-2025-03"><div class="grid sm:grid-cols-2 gap-6 items-center"><div><h3 class="text-2xl font-bold text-sky-300">Basic Email Signature Builder</h3><p class="text-sm text-blue-100 mt-2">Craft clean, compatible signatures for Gmail and Outlook. Copy-paste ready with live preview.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30">Target: 03/2025</span></div><div class="flex justify-center"><svg viewBox="0 0 240 160" class="w-full max-w-[340px] rounded-xl shadow-xl"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0%" stop-color="#60A5FA"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><rect rx="18" width="240" height="160" fill="url(#g1)" opacity="0.18"/><rect x="24" y="28" width="120" height="12" rx="6" fill="#93C5FD"/><rect x="24" y="50" width="72" height="10" rx="5" fill="#A5B4FC"/><circle cx="36" cy="90" r="14" fill="#60A5FA"/><rect x="58" y="82" width="92" height="8" rx="4" fill="#C7D2FE"/><rect x="58" y="98" width="72" height="8" rx="4" fill="#93C5FD"/><rect x="24" y="120" width="110" height="12" rx="6" fill="#38BDF8"/></svg></div></div></div>
               <div class="rm-panel hidden" id="rm-2025-05"><div class="grid sm:grid-cols-2 gap-6 items-center"><div><h3 class="text-2xl font-bold text-sky-300">Dynamic Signature Builder</h3><p class="text-sm text-blue-100 mt-2">Publish a live, shareable signature page with public viewing links.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30">Target: 05/2025</span></div><div class="flex justify-center"><svg viewBox="0 0 240 160" class="w-full max-w-[340px] rounded-xl shadow-xl"><defs><linearGradient id="g2" x1="0" x2="1"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#60A5FA"/></linearGradient></defs><rect rx="18" width="240" height="160" fill="url(#g2)" opacity="0.18"/><rect x="24" y="28" width="140" height="12" rx="6" fill="#C4B5FD"/><rect x="24" y="50" width="100" height="10" rx="5" fill="#93C5FD"/><rect x="24" y="72" width="60" height="10" rx="5" fill="#93C5FD"/><rect x="24" y="120" width="64" height="14" rx="7" fill="#38BDF8"/><rect x="96" y="120" width="64" height="14" rx="7" fill="#8B5CF6"/></svg></div></div></div>
               <div class="rm-panel hidden" id="rm-2025-07"><div class="grid sm:grid-cols-2 gap-6 items-center"><div><h3 class="text-2xl font-bold text-sky-300">Engagement Features</h3><p class="text-sm text-blue-100 mt-2">Boost interactions with polls and a quick QR / Share menu for your card.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30">Target: 07/2025</span></div><div class="flex justify-center"><svg viewBox="0 0 240 160" class="w-full max-w-[340px] rounded-xl shadow-xl"><defs><linearGradient id="g3" x1="0" x2="1"><stop offset="0%" stop-color="#22D3EE"/><stop offset="100%" stop-color="#06B6D4"/></linearGradient></defs><rect rx="18" width="240" height="160" fill="url(#g3)" opacity="0.18"/><rect x="24" y="30" width="140" height="10" rx="5" fill="#93C5FD"/><rect x="24" y="54" width="100" height="8" rx="4" fill="#C7D2FE"/><rect x="24" y="76" width="60" height="8" rx="4" fill="#C7D2FE"/><rect x="24" y="100" width="40" height="40" rx="8" fill="#38BDF8"/><rect x="76" y="100" width="40" height="40" rx="8" fill="#8B5CF6"/><rect x="128" y="100" width="40" height="40" rx="8" fill="#22D3EE"/></svg></div></div></div>
