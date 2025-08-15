@@ -62,15 +62,54 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .anchor-offset { scroll-margin-top: 120px; }
 
-    /* New styles for Flip Card Timeline */
+    /* Styles for Zig-Zag Flip Card Timeline */
+    .timeline-container {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .timeline-container::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      background-color: rgba(129, 140, 248, 0.25);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1.5px;
+      border-radius: 3px;
+    }
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      min-height: 380px; /* Give space for the flipped card */
+    }
+     .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      right: -14px;
+      background: linear-gradient(to bottom right, #818cf8, #60a5fa);
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      top: 35px;
+      border-radius: 50%;
+      z-index: 10;
+    }
+    .timeline-item.left { left: 0; }
+    .timeline-item.right { left: 50%; }
+    .timeline-item.right::after { left: -11px; }
+
     .flip-card-container {
       perspective: 1000px;
-      margin-bottom: 1rem;
+      width: 100%;
+      height: 100%;
     }
     .flipper {
       position: relative;
       width: 100%;
-      min-height: 350px; /* Set a min-height for consistency */
+      height: 100%;
       transition: transform 0.6s;
       transform-style: preserve-3d;
     }
@@ -84,6 +123,9 @@
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
       border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .card-back {
       transform: rotateY(180deg);
@@ -215,110 +257,18 @@
         <p class="text-sm text-gray-400">* Indicates a Pro Plan feature.</p>
       </footer>
 
-      <!-- **FINAL UPDATED FLIP CARD ROAD MAP SECTION** -->
-      <section id="roadmap" class="anchor-offset mt-36 lg:mt-48 max-w-4xl mx-auto">
+      <!-- **UPDATED ZIG-ZAG FLIP CARD ROAD MAP** -->
+      <section id="roadmap" class="anchor-offset mt-36 lg:mt-48 max-w-7xl mx-auto">
         <h2 class="text-2xl sm:text-4xl font-bold text-center mb-2 text-shadow">Hello! Road Map</h2>
         <p class="text-center text-blue-100 mb-10">What’s shipping next — and when. Click a card to learn more.</p>
-        
-        <div class="space-y-4">
-            <!-- Milestone 1 -->
-            <div class="flip-card-container roadmap-item" tabindex="0" role="button">
-                <div class="flipper">
-                    <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-                        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">MAR</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div>
-                        <h3 class="font-semibold text-green-200 text-xl">Basic Email Signature Builder</h3>
-                    </div>
-                    <div class="card-back colored-panel p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-green-300">Basic Email Signature Builder</h3>
-                        <p class="text-sm text-blue-100 mt-2">Craft clean, compatible signatures for Gmail and Outlook. Copy-paste ready with live preview.</p>
-                        <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 03/2025</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Milestone 2 -->
-            <div class="flip-card-container roadmap-item" tabindex="0" role="button">
-                <div class="flipper">
-                    <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-                        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">MAY</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div>
-                        <h3 class="font-semibold text-green-200 text-xl">Dynamic Signature Builder</h3>
-                    </div>
-                    <div class="card-back colored-panel p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-green-300">Dynamic Signature Builder</h3>
-                        <p class="text-sm text-blue-100 mt-2">Publish a live, shareable signature page with public viewing links.</p>
-                        <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 05/2025</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Milestone 3 -->
-            <div class="flip-card-container roadmap-item" tabindex="0" role="button">
-                <div class="flipper">
-                    <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-                        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">JUL</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div>
-                        <h3 class="font-semibold text-green-200 text-xl">Engagement Features</h3>
-                    </div>
-                    <div class="card-back colored-panel p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-green-300">Engagement Features</h3>
-                        <p class="text-sm text-blue-100 mt-2">Boost interactions with polls and a quick QR / Share menu for your card.</p>
-                        <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 07/2025</span>
-                    </div>
-                </div>
-            </div>
-             <!-- Milestone 4 -->
-            <div class="flip-card-container roadmap-item" tabindex="0" role="button">
-                <div class="flipper">
-                    <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-                        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">AUG</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div>
-                        <h3 class="font-semibold text-green-200 text-xl">Added Customization</h3>
-                    </div>
-                    <div class="card-back colored-panel p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-green-300">Added Customization</h3>
-                        <p class="text-sm text-blue-100 mt-2">Card themes, brand colors, and display font options for your name.</p>
-                        <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 08/2025</span>
-                    </div>
-                </div>
-            </div>
-             <!-- Milestone 5 -->
-            <div class="flip-card-container roadmap-item" tabindex="0" role="button">
-                <div class="flipper">
-                    <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-                        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">SEP</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div>
-                        <h3 class="font-semibold text-green-200 text-xl">Signature Spotlights</h3>
-                    </div>
-                    <div class="card-back colored-panel p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-green-300">Signature Spotlights</h3>
-                        <p class="text-sm text-blue-100 mt-2">Curated gallery highlighting standout community Cards.</p>
-                        <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 09/2025</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Milestone 6 -->
-            <div class="flip-card-container roadmap-item" tabindex="0" role="button">
-                <div class="flipper">
-                    <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-                        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">DEC</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div>
-                        <h3 class="font-semibold text-green-200 text-xl">Directory Platform</h3>
-                    </div>
-                    <div class="card-back colored-panel p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-green-300">Directory Platform</h3>
-                        <p class="text-sm text-blue-100 mt-2">Discover people by tags and expertise in a searchable network of Cards.</p>
-                        <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 12/2025</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Milestone 7 - NEW -->
-            <div class="flip-card-container roadmap-item" tabindex="0" role="button">
-                <div class="flipper">
-                    <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-                        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">FEB</span><span class="block text-green-300/80 text-sm font-semibold">'26</span></div>
-                        <h3 class="font-semibold text-green-200 text-xl">Hello! Teams Platform</h3>
-                    </div>
-                    <div class="card-back colored-panel p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-green-300">Hello! Teams Platform</h3>
-                        <p class="text-sm text-blue-100 mt-2">Centralized admin dashboard for companies to manage employee signatures, enforce brand consistency, and streamline distribution.</p>
-                        <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 02/2026</span>
-                    </div>
-                </div>
-            </div>
+        <div class="timeline-container">
+            <div class="timeline-item left"><div class="flip-card-container" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20"><span class="text-green-300 font-bold text-2xl">MAR</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="font-semibold text-green-200">Basic Email Signature Builder</h3></div><div class="card-back colored-panel p-6 flex flex-col justify-center"><h3 class="text-2xl font-bold text-green-300">Basic Email Signature Builder</h3><p class="text-sm text-blue-100 mt-2">Craft clean, compatible signatures for Gmail and Outlook. Copy-paste ready with live preview.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 03/2025</span></div></div></div></div>
+            <div class="timeline-item right"><div class="flip-card-container" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-3 flex items-center justify-end gap-4 rounded-xl whitespace-nowrap cursor-pointer"><h3 class="font-semibold text-green-200">Dynamic Signature Builder</h3><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20"><span class="text-green-300 font-bold text-2xl">MAY</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div></div><div class="card-back colored-panel p-6 flex flex-col justify-center"><h3 class="text-2xl font-bold text-green-300">Dynamic Signature Builder</h3><p class="text-sm text-blue-100 mt-2">Publish a live, shareable signature page with public viewing links.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 05/2025</span></div></div></div></div>
+            <div class="timeline-item left"><div class="flip-card-container" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20"><span class="text-green-300 font-bold text-2xl">JUL</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="font-semibold text-green-200">Engagement Features</h3></div><div class="card-back colored-panel p-6 flex flex-col justify-center"><h3 class="text-2xl font-bold text-green-300">Engagement Features</h3><p class="text-sm text-blue-100 mt-2">Boost interactions with polls and a quick QR / Share menu for your card.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 07/2025</span></div></div></div></div>
+            <div class="timeline-item right"><div class="flip-card-container" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-3 flex items-center justify-end gap-4 rounded-xl whitespace-nowrap cursor-pointer"><h3 class="font-semibold text-green-200">Added Customization</h3><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20"><span class="text-green-300 font-bold text-2xl">AUG</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div></div><div class="card-back colored-panel p-6 flex flex-col justify-center"><h3 class="text-2xl font-bold text-green-300">Added Customization</h3><p class="text-sm text-blue-100 mt-2">Card themes, brand colors, and display font options for your name.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 08/2025</span></div></div></div></div>
+            <div class="timeline-item left"><div class="flip-card-container" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20"><span class="text-green-300 font-bold text-2xl">SEP</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="font-semibold text-green-200">Signature Spotlights</h3></div><div class="card-back colored-panel p-6 flex flex-col justify-center"><h3 class="text-2xl font-bold text-green-300">Signature Spotlights</h3><p class="text-sm text-blue-100 mt-2">Curated gallery highlighting standout community Cards.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 09/2025</span></div></div></div></div>
+            <div class="timeline-item right"><div class="flip-card-container" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-3 flex items-center justify-end gap-4 rounded-xl whitespace-nowrap cursor-pointer"><h3 class="font-semibold text-green-200">Directory Platform</h3><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20"><span class="text-green-300 font-bold text-2xl">DEC</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div></div><div class="card-back colored-panel p-6 flex flex-col justify-center"><h3 class="text-2xl font-bold text-green-300">Directory Platform</h3><p class="text-sm text-blue-100 mt-2">Discover people by tags and expertise in a searchable network of Cards.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 12/2025</span></div></div></div></div>
+            <div class="timeline-item left"><div class="flip-card-container" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-3 flex items-center gap-4 rounded-xl whitespace-nowrap cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-2 w-20"><span class="text-green-300 font-bold text-2xl">FEB</span><span class="block text-green-300/80 text-sm font-semibold">'26</span></div><h3 class="font-semibold text-green-200">Hello! Teams Platform</h3></div><div class="card-back colored-panel p-6 flex flex-col justify-center"><h3 class="text-2xl font-bold text-green-300">Hello! Teams Platform</h3><p class="text-sm text-blue-100 mt-2">Centralized admin dashboard for companies to manage employee signatures, enforce brand consistency, and streamline distribution.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 02/2026</span></div></div></div></div>
         </div>
       </section>
 
@@ -363,30 +313,30 @@
         }
       });
     })();
-    // **NEW FLIP CARD LOGIC**
+    
+    // **NEW ZIG-ZAG FLIP CARD LOGIC**
     (function () {
-      const roadmapItems = document.querySelectorAll('.roadmap-item');
-      roadmapItems.forEach(item => {
-        item.addEventListener('click', () => {
-          // If the clicked card is already flipped, un-flip it.
-          if (item.classList.contains('is-flipped')) {
-            item.classList.remove('is-flipped');
+      const flipCards = document.querySelectorAll('.flip-card-container');
+      flipCards.forEach(card => {
+        const flipAction = () => {
+          if (card.classList.contains('is-flipped')) {
+            card.classList.remove('is-flipped');
           } else {
-            // Otherwise, un-flip all other cards first.
-            roadmapItems.forEach(otherItem => {
-              otherItem.classList.remove('is-flipped');
+            flipCards.forEach(otherCard => {
+              otherCard.classList.remove('is-flipped');
             });
-            // Then, flip the clicked card.
-            item.classList.add('is-flipped');
+            card.classList.add('is-flipped');
           }
-        });
-        item.addEventListener('keydown', (e) => {
+        };
+        card.addEventListener('click', flipAction);
+        card.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                item.click();
+                flipAction();
             }
         });
       });
     })();
+
     (function () {
       const overlay = document.getElementById('jotform-overlay');
       const panel   = document.getElementById('jotform-panel');
