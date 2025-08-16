@@ -32,13 +32,11 @@
       border: 1px solid rgba(255,255,255,0.15);
       transition: all 0.3s ease;
     }
-    /* --- HEADER STYLE FIX --- */
     #page-header {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      /* Added for the 3D blur/lift effect */
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
     }
     .glass-card:hover, .glass-card-alt:hover, .pricing-card:hover, .glass-card-pro:hover {
@@ -64,7 +62,7 @@
     .modal-panel { background: rgba(23, 33, 62, 0.6); border: 1px solid rgba(129, 140, 248, 0.35); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .anchor-offset { scroll-margin-top: 120px; } /* Increased margin for sticky header */
+    .anchor-offset { scroll-margin-top: 120px; }
 
     /* Styles for Zig-Zag Flip Card Timeline */
     .timeline-container {
@@ -139,7 +137,7 @@
     #jotform-panel { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.45); width: min(880px, 94vw); }
     #jotform-panel .frame-wrap { max-height: calc(100vh - 64px); }
     
-    /* --- BACK-TO-TOP BUTTON STYLES --- */
+    /* --- BACK-TO-TOP BUTTON STYLE FIX --- */
     #back-to-top {
       position: fixed;
       bottom: 30px;
@@ -159,15 +157,7 @@
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      pointer-events: none;
-    }
-    #back-to-top.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      transition: transform 0.3s ease, background-color 0.3s ease;
     }
     #back-to-top:hover {
       background: rgba(41, 154, 212, 0.7);
@@ -443,15 +433,9 @@
         });
       });
 
-      // ---------- Back-to-Top Button Logic ----------
+      // --- BACK-TO-TOP BUTTON LOGIC FIX ---
       const backToTopButton = document.getElementById('back-to-top');
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-          backToTopButton.classList.add('show');
-        } else {
-          backToTopButton.classList.remove('show');
-        }
-      });
+      // This only handles the click; the button is always visible via CSS
       backToTopButton.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
