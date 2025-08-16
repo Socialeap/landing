@@ -32,12 +32,14 @@
       border: 1px solid rgba(255,255,255,0.15);
       transition: all 0.3s ease;
     }
-    /* --- HEADER STYLE TWEAK --- */
+    /* --- HEADER STYLE FIX --- */
     #page-header {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      /* Added for the 3D blur/lift effect */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
     }
     .glass-card:hover, .glass-card-alt:hover, .pricing-card:hover, .glass-card-pro:hover {
       transform: translateY(-5px) scale(1.02);
@@ -62,7 +64,7 @@
     .modal-panel { background: rgba(23, 33, 62, 0.6); border: 1px solid rgba(129, 140, 248, 0.35); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .anchor-offset { scroll-margin-top: 40px; }
+    .anchor-offset { scroll-margin-top: 120px; } /* Increased margin for sticky header */
 
     /* Styles for Zig-Zag Flip Card Timeline */
     .timeline-container {
@@ -83,7 +85,6 @@
     }
     .timeline-item {
       padding: 0 40px;
-      /* --- ROADMAP SPACING TWEAK --- */
       margin-bottom: 5px; 
       position: relative;
       width: 50%;
@@ -108,7 +109,6 @@
     .flip-card-container {
       perspective: 1500px;
       width: 100%;
-      /* --- ROADMAP SPACING TWEAK --- */
       height: 120px;
     }
     .flipper {
@@ -179,7 +179,7 @@
 
 <body class="bg-gray-900 text-white">
 
-  <header id="page-header" class="sticky top-0 z-30">
+  <header id="page-header" class="glass-card sticky top-0 z-30">
     <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
       <div class="flex items-center gap-3 sm:gap-4">
         <div class="flex flex-col">
