@@ -13,7 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lobster&display=swap" rel="stylesheet"/>
 
   <style>
-    html { scroll-behavior: smooth; }
+    html { 
+      scroll-behavior: smooth; 
+    }
     body {
       font-family: 'Inter', sans-serif;
       background-image:
@@ -30,12 +32,11 @@
       border: 1px solid rgba(255,255,255,0.15);
       transition: all 0.3s ease;
     }
-    #page-header.glass-card {
-      background: rgba(255, 255, 255, 0.07);
-      border-left: 1px solid rgba(255,255,255,0.15);
-      border-right: 1px solid rgba(255,255,255,0.15);
-      border-top: 1px solid rgba(255, 255, 255, 0.25);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    #page-header {
+      background: rgba(23, 33, 62, 0.7); /* Darker, less transparent header */
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(129, 140, 248, 0.2);
     }
     .glass-card:hover, .glass-card-alt:hover, .pricing-card:hover, .glass-card-pro:hover {
       transform: translateY(-5px) scale(1.02);
@@ -139,7 +140,7 @@
 
 <body class="bg-gray-900 text-white">
 
-  <header id="page-header" class="fixed top-0 left-0 right-0 z-40 glass-card">
+  <header id="page-header" class="sticky top-0 left-0 right-0 z-40">
     <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
       <div class="flex items-center gap-3 sm:gap-4">
         <div class="flex flex-col">
@@ -148,20 +149,20 @@
         </div>
       </div>
       <div class="hidden md:flex items-center space-x-6">
-        <a href="#features" data-target="features" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Features</a>
-        <a href="#optimization" data-target="optimization" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Optimization</a>
-        <a href="#use-cases" data-target="use-cases" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Use Cases</a>
-        <a href="#pricing" data-target="pricing" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Pricing</a>
-        <a href="#roadmap" data-target="roadmap" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Road Map</a>
+        <a href="#features" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Features</a>
+        <a href="#optimization" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Optimization</a>
+        <a href="#use-cases" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Use Cases</a>
+        <a href="#pricing" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Pricing</a>
+        <a href="#roadmap" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Road Map</a>
         <a href="https://www.socialeap.net/hello-tips" target="_blank" rel="noopener" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Tips</a>
       </div>
     </nav>
   </header>
 
-  <main class="pt-40 sm:pt-44 pb-16">
+  <main class="pt-10 sm:pt-16 pb-16">
     <div class="container mx-auto px-4 sm:px-6">
 
-      <section class="text-center max-w-4xl mx-auto">
+      <section id="hero" class="anchor-offset text-center max-w-4xl mx-auto">
         <h1 class="text-3xl sm:text-5xl md:text-7xl font-extrabold leading-tight tracking-tighter text-shadow">
           <span class="block">Transform Every Introduction</span>
           <span class="block text-sky-300">Into an Interactive Connection.</span>
@@ -290,28 +291,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // ---------- Smooth Scrolling Navigation ----------
-      const header = document.getElementById('page-header');
-      const headerHeight = () => header ? header.offsetHeight : 0;
-      
-      function scrollToId(id) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const y = el.getBoundingClientRect().top + window.pageYOffset - (headerHeight() + 16);
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-
-      document.querySelectorAll('a[data-target]').forEach(a => {
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          const id = a.getAttribute('data-target');
-          scrollToId(id);
-          try {
-            history.pushState(null, null, '#' + id);
-          } catch (e) {}
-        });
-      });
-
       // ---------- Zig-Zag Flip Card Logic ----------
       const flipCards = document.querySelectorAll('.flip-card-container');
       flipCards.forEach(card => {
@@ -405,20 +384,36 @@
         } catch(_) {}
       }, false);
     });
-
-    window.addEventListener('load', () => {
-        if (window.location.hash) {
-            const id = window.location.hash.replace('#','');
-            setTimeout(() => {
-                const header = document.getElementById('page-header');
-                const headerHeight = () => header ? header.offsetHeight : 0;
-                const el = document.getElementById(id);
-                if (!el) return;
-                const y = el.getBoundingClientRect().top + window.pageYOffset - (headerHeight() + 16);
-                window.scrollTo({ top: y, behavior: 'smooth' });
-            }, 100);
-        }
-    });
   </script>
 </body>
 </html>
+```
+
+### 2. Custom `<iframe>` Code for Wix
+
+Now, go to your Wix editor. Delete the old HTML element and add a new one. Paste the following code inside it. This snippet is designed to fill the space you give it in the Wix editor and make the content scrollable.
+
+**Important:** In the Wix editor, you must stretch the HTML element to be the **full width and height** of the section you want it to occupy. A good starting height would be around 800px or more, but you can adjust it to what looks best.
+
+
+```html
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+</style>
+
+<iframe 
+    src="https://socialeap.github.io/landing/"
+    title="Hello! Interactive Signature Cards Landing Page">
+</iframe>
