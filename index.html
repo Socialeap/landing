@@ -61,7 +61,7 @@
     .modal-panel { background: rgba(23, 33, 62, 0.6); border: 1px solid rgba(129, 140, 248, 0.35); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .anchor-offset { scroll-margin-top: 120px; }
+    .anchor-offset { scroll-margin-top: 40px; /* Reduced margin for static header */ }
 
     /* Styles for Zig-Zag Flip Card Timeline */
     .timeline-container {
@@ -140,7 +140,7 @@
 
 <body class="bg-gray-900 text-white">
 
-  <header id="page-header" class="sticky top-0 left-0 right-0 z-40 glass-card">
+  <header id="page-header" class="glass-card">
     <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
       <div class="flex items-center gap-3 sm:gap-4">
         <div class="flex flex-col">
