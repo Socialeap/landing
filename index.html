@@ -33,12 +33,12 @@
       transition: all 0.3s ease;
     }
     #page-header {
-      background: rgba(23, 33, 62, 0.7); /* Darker, less transparent header */
+      background: rgba(23, 33, 62, 0.7);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(129, 140, 248, 0.2);
     }
-    .glass-card:hover, .glass-card-alt:hover, .pricing-card:hover, .glass-card-pro:hover {
+    .glass-card:hover, .glass-card-alt:hover, .pricing-card:hover, .glass-card-pro:hover, #page-header:hover {
       transform: translateY(-5px) scale(1.02);
       border-color: rgba(56, 189, 248, 0.4);
       box-shadow: 0 15px 30px rgba(0,0,0,0.25);
@@ -140,7 +140,7 @@
 
 <body class="bg-gray-900 text-white">
 
-  <header id="page-header" class="sticky top-0 left-0 right-0 z-40">
+  <header id="page-header" class="sticky top-0 left-0 right-0 z-40 glass-card">
     <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
       <div class="flex items-center gap-3 sm:gap-4">
         <div class="flex flex-col">
@@ -258,7 +258,6 @@
         <p class="text-sm text-gray-400">* Indicates a Pro Plan feature.</p>
       </footer>
 
-      <!-- **FINAL UPDATED ZIG-ZAG FLIP CARD ROAD MAP** -->
       <section id="roadmap" class="anchor-offset mt-36 lg:mt-48 max-w-7xl mx-auto">
         <h2 class="text-2xl sm:text-4xl font-bold text-center mb-2 text-shadow">Hello! Road Map</h2>
         <p class="text-center text-blue-100 mb-10">What’s shipping next — and when. Click a card to learn more.</p>
@@ -391,18 +390,22 @@
 
 ### 2. Custom `<iframe>` Code for Wix
 
-Now, go to your Wix editor. Delete the old HTML element and add a new one. Paste the following code inside it. This snippet is designed to fill the space you give it in the Wix editor and make the content scrollable.
+Now, go to your Wix editor. Delete the old HTML element and add a new one. **Paste the following code inside it.**
+
+This snippet is designed to fill the space you give it in the Wix editor and make the content scrollable.
 
 **Important:** In the Wix editor, you must stretch the HTML element to be the **full width and height** of the section you want it to occupy. A good starting height would be around 800px or more, but you can adjust it to what looks best.
 
 
 ```html
 <style>
+    /* This removes default padding and margins */
     body, html {
         margin: 0;
         padding: 0;
         overflow: hidden;
     }
+    /* This makes the iframe fill the entire container you create in Wix */
     iframe {
         position: absolute;
         top: 0;
