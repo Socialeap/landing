@@ -239,7 +239,29 @@
         </div>
       </section>
 
-      <section id="viewer-experience" class="anchor-offset mt-36 lg:mt-48">
+<section id="linkup-flagship" class="hello-linkup-section" style="margin-top:6rem;margin-bottom:4rem;">
+  <div class="hello-linkup-wrap" style="max-width:1100px;margin:0 auto;padding:0 1rem;text-align:center;">
+    <h2 class="hello-linkup-title" style="font-weight:800;letter-spacing:.2px;margin:0 0 1rem 0;
+      font-size:clamp(1.6rem,3.5vw,2.4rem);background:linear-gradient(90deg,#a78bfa,#8b5cf6,#22d3ee);
+      -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 8px 30px rgba(0,0,0,.35);">
+      Introducing <span style="white-space:nowrap;">Hello! LinkUp</span> — the Handshake that moves things forward
+    </h2>
+    <p class="hello-linkup-copy" style="max-width:800px;margin:0 auto 1.25rem;color:#cfd2ff;line-height:1.6;font-size:clamp(.95rem,1.2vw,1.125rem)">
+      LinkUp turns a visit to your Signature Card into an intentional handshake. Visitors share a one‑line intro,
+      pick a next‑step, and get an instant compatibility snapshot. No threads. No drift. Just clarity and momentum.
+    </p>
+    <button id="open-linkup-demo" class="hello-linkup-cta" style="display:inline-flex;align-items:center;gap:.6rem;
+      padding:.85rem 1.25rem;border-radius:12px;border:0;background:linear-gradient(180deg,#a78bfa,#8b5cf6);
+      color:#170e2f;font-weight:800;box-shadow:0 10px 28px rgba(0,0,0,.35);cursor:pointer">
+      See the Live Demo <span aria-hidden="true">✨</span>
+    </button>
+    <div class="hello-linkup-nudge" style="margin-top:.75rem;font-size:.85rem;color:#a8abcf">Opens automatically when you reach this section.</div>
+  </div>
+</section>
+
+      <section id="viewer-experience"
+
+ class="anchor-offset mt-36 lg:mt-48">
         <h2 class="text-2xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-shadow">Easily Engage Your Audience</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <div class="glass-card-pro p-5 sm:p-6 rounded-xl shadow-lg"><h3 class="text-base sm:text-xl font-bold mb-3 text-indigo-300 flex items-center gap-3"><svg class="h-6 w-6 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"><animate attributeName="r" from="4" to="8" dur="1.5s" begin="0s" repeatCount="indefinite" /><animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite" /></circle><circle cx="12" cy="12" r="4" /></svg> Live Profile Sync</h3><p class="text-sm text-gray-200">Email signatures include a '🟢 Live' icon, linking recipients to your card for the latest info and interactive features.</p></div>
@@ -443,5 +465,76 @@
 
     });
   </script>
+
+
+<style>
+#linkup-demo-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:saturate(120%) blur(10px);
+  display:none;align-items:center;justify-content:center;z-index:9999}
+#linkup-demo-panel{position:relative;width:min(96vw,1200px);height:min(86vh,900px);border-radius:18px;
+  background:rgba(19,16,34,.94);border:1px solid rgba(139,92,246,.28);
+  box-shadow:0 18px 60px rgba(0,0,0,.6), inset 0 0 0 1px rgba(139,92,246,.18);overflow:hidden;
+  transform:scale(.96);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .28s ease}
+#linkup-demo-overlay[data-open="1"]{display:flex}
+#linkup-demo-overlay[data-anim="in"] #linkup-demo-panel{transform:scale(1);opacity:1}
+#linkup-close{position:absolute;top:10px;right:12px;display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06);color:#eaeaf6;cursor:pointer}
+#linkup-close:hover{background:rgba(255,255,255,.12)}
+#linkup-frame{width:100%;height:100%;border:0}
+/* subtle glow rim */
+#linkup-demo-panel:before{content:"";position:absolute;inset:-1px;border-radius:20px;
+  background:conic-gradient(from 180deg,rgba(167,139,250,.25),rgba(34,211,238,.18),rgba(167,139,250,.25));
+  filter:blur(18px);opacity:.6;z-index:-1}
+</style>
+<div id="linkup-demo-overlay" aria-hidden="true">
+  <div id="linkup-demo-panel" role="dialog" aria-modal="true" aria-label="Hello! LinkUp Demo">
+    <button id="linkup-close" aria-label="Close demo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6"/>
+      </svg>
+    </button>
+    <iframe id="linkup-frame" src="https://socialeap.github.io/hello-linkup/"></iframe>
+  </div>
+</div>
+<script>
+(function(){
+  var overlay = document.getElementById('linkup-demo-overlay');
+  var panel   = document.getElementById('linkup-demo-panel');
+  var openBtn = document.getElementById('open-linkup-demo');
+  var closeBtn= document.getElementById('linkup-close');
+  var section = document.getElementById('linkup-flagship');
+  var openedOnce = false;
+
+  function openModal(){
+    if(!overlay) return;
+    overlay.setAttribute('data-open','1');
+    requestAnimationFrame(function(){ overlay.setAttribute('data-anim','in'); });
+  }
+  function closeModal(){
+    if(!overlay) return;
+    overlay.removeAttribute('data-anim');
+    setTimeout(function(){ overlay.removeAttribute('data-open'); }, 220);
+  }
+  if(openBtn){ openBtn.addEventListener('click', openModal); }
+  if(closeBtn){ closeBtn.addEventListener('click', closeModal); }
+  if(overlay){
+    overlay.addEventListener('click', function(e){ if(e.target===overlay) closeModal(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+  }
+  // Auto-open once when section is in view
+  if(section && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting && !openedOnce){
+          openedOnce = true;
+          openModal();
+        }
+      });
+    }, { root:null, threshold: .35 });
+    io.observe(section);
+  }
+})();
+</script>
+
 </body>
 </html>
