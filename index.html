@@ -19,28 +19,22 @@
     }
     body {
       font-family: 'Inter', sans-serif;
-      /* Updated with more complex gradients */
-      background-color: #0a1428;
-      background-image: 
-        radial-gradient(at 20% 25%, hsla(212,50%,30%,0.3) 0px, transparent 50%),
-        radial-gradient(at 75% 30%, hsla(260,55%,35%,0.25) 0px, transparent 50%),
-        radial-gradient(at 5% 95%, hsla(190,60%,30%,0.3) 0px, transparent 50%),
-        radial-gradient(at 80% 90%, hsla(240,50%,40%,0.2) 0px, transparent 50%),
+      background-image:
+        linear-gradient(to bottom right, rgba(10,20,40,0.4), rgba(5,10,20,0.6)),
         url('https://static.wixstatic.com/media/c3283f_9dc0517f310f4bea882c9d5455f30215~mv2.png');
       background-size: cover; background-position: center; background-attachment: fixed;
     }
     .font-lobster { font-family: 'Lobster', cursive; }
 
     .glass-card, .glass-card-alt, .pricing-card, .modal-panel, .glass-card-pro {
-      background: rgba(255,255,255,0.05); /* Retained for glassmorphism */
+      background: rgba(255,255,255,0.05);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255,255,255,0.15);
       transition: all 0.3s ease;
     }
  #page-header {
-  /* Updated with new gradient background */
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -214,7 +208,7 @@
 
 <body class="bg-gray-900 text-white">
 
-<header id="page-header" class="fixed top-0 z-30 w-full">
+<header id="page-header" class="glass-card fixed top-0 z-30 w-full">
   <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
     <div class="flex items-center gap-3 sm:gap-4">
       <div class="flex flex-col">
