@@ -902,56 +902,72 @@
       
       // Expose calculateROI to window so oninput works
       window.calculateROI = function() {
-          // Get Values
+          // 1. Get User Inputs
           const hourlyRate = parseInt(roiInputs.hourly.value);
-          const weeklyHours = parseInt(roiInputs.hours.value);
+          const weeklyHours = parseInt(roiInputs.hours.value); // We keep this for the bar chart, but exclude it from ROI
           const dealValue = parseInt(roiInputs.deal.value);
-
-          // Update Input Labels
+      
+          // 2. Update Input Labels (Visuals)
           roiLabels.hourly.innerText = hourlyRate;
           roiLabels.hours.innerText = weeklyHours;
           roiLabels.deal.innerText = dealValue;
-
-          // 1. Manual Reality
-          const monthlyManualHours = weeklyHours * 4;
-          const manualLeadsPerMonth = (monthlyManualHours * 60) / MANUAL_MINS_PER_LEAD;
+      
+          // --- CONSTANTS ---
+          // You mentioned Ultra gets 3-5 leads/day. Let's average to 150/month.
+          // Manual speed: 15 mins per lead (4 leads per hour).
+          const MANUAL_LEADS_PER_HOUR = 4; 
+          const ULTRA_SCOUTS_MONTHLY = 150; 
           
-          // 2. Ultra Reality (Time Savings)
-          const hoursToFind150Leads = (ULTRA_SCOUTS * MANUAL_MINS_PER_LEAD) / 60;
-          const valueOfTimeSaved = hoursToFind150Leads * hourlyRate;
-
-          // 3. Revenue Upside
-          const dealsManual = manualLeadsPerMonth * CONVERSION_RATE;
-          const dealsUltra = ULTRA_SCOUTS * CONVERSION_RATE;
-          const revenueDiff = (dealsUltra - dealsManual) * dealValue;
-
-          // 4. Totals
-          const totalMonthlyValue = valueOfTimeSaved + revenueDiff; 
-          const netBenefit = totalMonthlyValue - ULTRA_COST;
+          // --- CORE LOGIC FIX ---
+          
+          // A. How many hours of manual labor equal 150 Ultra leads?
+          // 150 leads / 4 leads per hour = 37.5 hours saved.
+          const hoursSavedByUltra = ULTRA_SCOUTS_MONTHLY / MANUAL_LEADS_PER_HOUR;
+          
+          // B. What is the monetary value of that saved time?
+          // 37.5 hours * User's Hourly Rate
+          const laborValueSaved = hoursSavedByUltra * hourlyRate;
+      
+          // C. Net Benefit (Pure Savings)
+          // Value of Labor Saved - Cost of Tool
+          const netBenefit = laborValueSaved - ULTRA_COST;
+      
+          // D. ROI Percentage
           const roi = (netBenefit / ULTRA_COST) * 100;
-
-          // 5. Update UI
+      
+          // --- UPDATING THE UI ---
+          
+          // 1. Main Value Display
+          // We display the pure Labor Value savings. This will ALWAYS be positive (unless hourly rate is < $0.80)
           roiResults.value.innerText = Math.round(netBenefit).toLocaleString();
           roiResults.roi.innerText = Math.round(roi).toLocaleString();
-          roiResults.hoursSaved.innerText = Math.round(hoursToFind150Leads);
-          roiResults.laborValue.innerText = Math.round(valueOfTimeSaved).toLocaleString();
+          
+          // 2. Stats Grid
+          roiResults.hoursSaved.innerText = Math.round(hoursSavedByUltra); // Should stay constant at ~38
+          roiResults.laborValue.innerText = Math.round(laborValueSaved).toLocaleString();
           roiResults.btnSavings.innerText = Math.round(netBenefit).toLocaleString();
-
-          // Update Chart (Cost Per Lead Comparison)
-          // Manual Cost = (Hourly Rate / 4 leads per hour) -- assuming 15 mins/lead
-          const manualCostPerLead = hourlyRate / (60 / MANUAL_MINS_PER_LEAD);
-          const ultraCostPerLead = ULTRA_COST / ULTRA_SCOUTS; // 29 / 150 = 0.193
+      
+          // --- CHART LOGIC (Cost Per Lead) ---
+          // Manual Cost per Lead = Hourly Rate / 4
+          const manualCostPerLead = hourlyRate / MANUAL_LEADS_PER_HOUR;
           
-          roiResults.manualCount.innerText = Math.round(manualCostPerLead);
+          // Ultra Cost per Lead = $29 / 150 = $0.19
+          const ultraCostPerLead = ULTRA_COST / ULTRA_SCOUTS_MONTHLY; 
           
-          // Calculate percentages for bars (Manual is usually much higher, so it's 100%)
-          // If Manual is $25 (rate 100), Ultra is $0.19. 
-          // Ultra bar = (0.19 / 25) * 100 = 0.7%
+          // Update Chart Numbers
+          roiResults.manualCount.innerText = manualCostPerLead.toFixed(2); // e.g. $25.00
           
+          // Update Bar Widths
+          // Manual is the baseline (100%)
           roiResults.manualBar.style.width = `100%`;
-          const ultraBarWidth = Math.max(1, (ultraCostPerLead / manualCostPerLead) * 100);
-          document.getElementById('bar-ultra-fill').style.width = `${ultraBarWidth}%`;
           
+          // Ultra bar relative to Manual
+          // If Manual is $25 and Ultra is $0.19, the bar should be tiny.
+          const ultraBarPercentage = (ultraCostPerLead / manualCostPerLead) * 100;
+          // Ensure it's at least 1% visible so it doesn't disappear
+          document.getElementById('bar-ultra-fill').style.width = `${Math.max(1, ultraBarPercentage)}%`;
+          
+          // Efficiency Multiplier
           const efficiencyMultiplier = Math.round(manualCostPerLead / ultraCostPerLead);
           roiResults.multiplier.innerText = `${efficiencyMultiplier}x More Efficient`;
       };
