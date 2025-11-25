@@ -817,16 +817,16 @@
 
                       <!-- Comparison Bar -->
                       <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-sm">
-                          <h4 class="text-sm font-semibold text-white mb-4">Productivity Multiplier</h4>
+                          <h4 class="text-sm font-semibold text-white mb-4">Time Cost for 150 Leads</h4>
                           
                           <!-- Manual -->
                           <div class="mb-4">
                               <div class="flex justify-between text-xs mb-1">
-                                  <span class="font-medium text-gray-400">You (Manual Work)</span>
-                                  <span class="text-gray-500"><span id="bar-manual-count">0</span> leads</span>
+                                  <span class="font-medium text-gray-400">Manual Work</span>
+                                  <span class="text-gray-500"><span id="bar-manual-count">0</span></span>
                               </div>
                               <div class="h-3 w-full bg-gray-700 rounded-full overflow-hidden">
-                                  <div id="bar-manual-fill" class="h-full bg-gray-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                  <div id="bar-manual-fill" class="h-full bg-gray-500 rounded-full transition-all duration-500" style="width: 100%"></div>
                               </div>
                           </div>
 
@@ -837,14 +837,14 @@
                                       <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
                                       Hello! Ultra Agent
                                   </span>
-                                  <span class="font-bold text-indigo-400">150 leads</span>
+                                  <span class="font-bold text-indigo-400">0 hours</span>
                               </div>
                               <div class="h-3 w-full bg-gray-700 rounded-full overflow-hidden relative">
                                   <div class="absolute inset-0 bg-indigo-900/20 w-full h-full"></div>
-                                  <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full w-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                                  <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full w-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: 2%"></div>
                               </div>
                               <p class="text-xs text-right text-green-400 font-medium mt-2">
-                                  <span id="multiplier-val">0</span>x more productive
+                                  <span id="multiplier-val">Saves ~38 hrs/mo</span>
                               </p>
                           </div>
                       </div>
@@ -933,19 +933,19 @@
           const roi = (netBenefit / ULTRA_COST) * 100;
 
           // 5. Update UI
-          roiResults.value.innerText = Math.round(totalMonthlyValue).toLocaleString();
+          roiResults.value.innerText = Math.round(netBenefit).toLocaleString();
           roiResults.roi.innerText = Math.round(roi).toLocaleString();
           roiResults.hoursSaved.innerText = Math.round(hoursToFind150Leads);
           roiResults.laborValue.innerText = Math.round(valueOfTimeSaved).toLocaleString();
           roiResults.btnSavings.innerText = Math.round(netBenefit).toLocaleString();
 
-          // Update Chart
-          roiResults.manualCount.innerText = Math.round(manualLeadsPerMonth);
-          const widthPercent = Math.min(100, (manualLeadsPerMonth / ULTRA_SCOUTS) * 100);
-          roiResults.manualBar.style.width = `${widthPercent}%`;
+          // Update Chart (Static Comparison: Time to find 150 leads)
+          // 150 leads * 15 mins/lead = 2250 mins = 37.5 hours
+          const hoursFor150 = Math.round((ULTRA_SCOUTS * MANUAL_MINS_PER_LEAD) / 60); 
+          roiResults.manualCount.innerText = `${hoursFor150} hours`;
+          roiResults.manualBar.style.width = `100%`;
           
-          const multiplier = Math.round(ULTRA_SCOUTS / Math.max(1, manualLeadsPerMonth));
-          roiResults.multiplier.innerText = multiplier;
+          roiResults.multiplier.innerText = `Saves ~${hoursFor150} hrs/mo`;
       };
 
       // Close on backdrop click
