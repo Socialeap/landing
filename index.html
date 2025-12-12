@@ -925,7 +925,7 @@ const manualMonthlyHours = weeklyHours * WEEKS_PER_MONTH;
 const manualMonthlyLeads = manualMonthlyHours * MANUAL_LEADS_PER_HOUR;
 
 // Ultra replaces up to its scout cap
-const ultraEffectiveLeads = Math.min(manualMonthlyLeads, ULTRA_SCOUTS);
+const ultraEffectiveLeads = Math.min(manualMonthlyLeads, ULTRA_SCOUTS_MONTHLY);
 
 // Hours Ultra actually replaces
 const hoursSavedByUltra = ultraEffectiveLeads / MANUAL_LEADS_PER_HOUR;
