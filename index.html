@@ -933,7 +933,7 @@
 
           // 2. Calculate "Leads per $100" (The Buying Power)
           const manualLeadsPer100 = 100 / manualCostPerLead;
-          const ultraLeadsPer100 = 100 / ultraCostPerLead; // Constant ~526
+          const ultraLeadsPer100 = 100 / ultraCostPerLead; // Constant ~517
 
           // 3. Render Text
           if(document.getElementById('manual-leads-count')) {
@@ -943,14 +943,32 @@
              document.getElementById('ultra-leads-count').innerText = Math.round(ultraLeadsPer100);
           }
           
-          // 4. Render Bars
-          // Ultra is the "Anchor" at 100% width. Manual is relative to Ultra.
-          const manualBarWidth = (manualLeadsPer100 / ultraLeadsPer100) * 100;
+          // 4. Render Bars - THE FIX
+          // Instead of comparing Manual directly to Ultra (which makes Manual tiny),
+          // We compare Manual to a "Good Day" baseline of 25 leads per $100 ($4/lead).
+          // This allows the bar to look full when cheap ($20/hr) and empty when expensive ($1000/hr).
           
-          // We clamp it to 1% minimum so it is always visible
+          const baselineLeads = 25; // This represents a "reasonable" manual cost of ~$4/lead
+          
+          // Calculate percentage against this human-scale baseline, capped at 100%
+          let manualBarWidth = (manualLeadsPer100 / baselineLeads) * 100;
+          manualBarWidth = Math.min(100, Math.max(1, manualBarWidth)); // Clamp between 1% and 100%
+          
           if(document.getElementById('bar-manual-fill')) {
-              document.getElementById('bar-manual-fill').style.width = `${Math.max(1, manualBarWidth)}%`;
+              document.getElementById('bar-manual-fill').style.width = `${manualBarWidth}%`;
+              
+              // Optional: Change color based on efficiency
+              if(manualBarWidth < 10) {
+                  document.getElementById('bar-manual-fill').className = "h-full bg-red-500 rounded-r-lg transition-all duration-500 ease-out";
+              } else if (manualBarWidth < 30) {
+                  document.getElementById('bar-manual-fill').className = "h-full bg-orange-500 rounded-r-lg transition-all duration-500 ease-out";
+              } else {
+                  document.getElementById('bar-manual-fill').className = "h-full bg-gray-500 rounded-r-lg transition-all duration-500 ease-out";
+              }
           }
+          
+          // Ultra Bar is always "Off the charts" full
+          // No changes needed for Ultra bar logic, it stays full to show dominance.
           
           // 5. Efficiency Multiplier
           const efficiencyMultiplier = Math.round(ultraLeadsPer100 / manualLeadsPer100);
