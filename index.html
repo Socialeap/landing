@@ -959,7 +959,7 @@ const hoursSavedByUltra = ultraEffectiveLeads / MANUAL_LEADS_PER_HOUR;
           const manualCostPerLead = hourlyRate / MANUAL_LEADS_PER_HOUR;
           
           // Ultra Cost per Lead = $29 / 150 = $0.19
-          const ultraCostPerLead = ULTRA_COST / ULTRA_SCOUTS_MONTHLY; 
+          const ultraCostPerLead = ULTRA_COST / ULTRA_SCOUTS; // ULTRA_SCOUTS = 150
           
           // Update Chart Numbers
           roiResults.manualCount.innerText = manualCostPerLead.toFixed(2); // e.g. $25.00
