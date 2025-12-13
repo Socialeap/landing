@@ -783,38 +783,41 @@
     </div>
 </div>
 
-                      <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-sm">
-                          <h4 class="text-sm font-semibold text-white mb-4">Cost Per Qualified Lead</h4>
-                          
-                          <div class="mb-4">
-                              <div class="flex justify-between text-xs mb-1">
-                                  <span class="font-medium text-gray-400">Manual Sourcing</span>
-                                  <span class="text-gray-500">$<span id="bar-manual-count">0</span>/lead</span>
-                              </div>
-                              <div class="h-3 w-full bg-gray-700 rounded-full overflow-hidden">
-                                  <div id="bar-manual-fill" class="h-full bg-gray-500 rounded-full transition-all duration-500" style="width: 100%"></div>
-                              </div>
-                          </div>
+                     <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+    <div>
+        <h4 class="text-sm font-semibold text-white mb-2">Buying Power (Leads per $100)</h4>
+        <p class="text-xs text-gray-400 mb-6">How many qualified connections can you generate with a $100 budget?</p>
+    </div>
+    
+    <div class="space-y-6">
+        <div>
+            <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-gray-400">Manual Sourcing</span>
+                <span class="text-white"><span id="manual-leads-count">0</span> Leads</span>
+            </div>
+            <div class="h-4 w-full bg-gray-700/50 rounded-r-lg overflow-hidden relative">
+                <div id="bar-manual-fill" class="h-full bg-gray-500 rounded-r-lg transition-all duration-500 ease-out flex items-center justify-end pr-2" style="width: 10%">
+                </div>
+            </div>
+        </div>
 
-                          <div>
-                              <div class="flex justify-between text-xs mb-1">
-                                  <span class="font-bold text-indigo-400 flex items-center gap-1">
-                                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-                                      Hello! Ultra Agent
-                                  </span>
-                                  <span class="font-bold text-indigo-400">$0.19/lead</span>
-                              </div>
-                              <div class="h-3 w-full bg-gray-700 rounded-full overflow-hidden relative">
-                                  <div class="absolute inset-0 bg-indigo-900/20 w-full h-full"></div>
-                                  <div id="bar-ultra-fill" class="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: 1%"></div>
-                              </div>
-                              <p class="text-xs text-right text-green-400 font-medium mt-2">
-                                  <span id="multiplier-val">100x More Efficient</span>
-                              </p>
-                          </div>
-                      </div>
-
-                  </div>
+        <div>
+            <div class="flex justify-between text-xs mb-1">
+                <span class="font-bold text-indigo-400 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                    Hello! Ultra Agent
+                </span>
+                <span class="font-bold text-indigo-400"><span id="ultra-leads-count">526</span> Leads</span>
+            </div>
+            <div class="h-4 w-full bg-gray-700/50 rounded-r-lg overflow-hidden relative">
+                <div class="h-full bg-gradient-to-r from-indigo-600 to-purple-500 rounded-r-lg shadow-[0_0_15px_rgba(99,102,241,0.6)] w-full"></div>
+            </div>
+            <p class="text-right text-[10px] text-green-400 font-bold mt-2 tracking-wide uppercase">
+                <span id="multiplier-val">0</span>x More Volume
+            </p>
+        </div>
+    </div>
+</div>
               </div>
           </div>
       </div>
@@ -868,68 +871,93 @@
       }
       
       // Expose calculateROI to window so oninput works
-window.calculateROI = function() {
-    // 1. Get User Inputs
-    const hourlyRate = parseInt(roiInputs.hourly.value);
-    const weeklyHours = parseInt(roiInputs.hours.value);
-    const dealValue = parseInt(roiInputs.deal.value); // Now strictly used for Pipeline calc
+// Expose calculateROI to window so oninput works
+      window.calculateROI = function() {
+          // 1. Get User Inputs
+          const hourlyRate = parseInt(roiInputs.hourly.value);
+          const weeklyHours = parseInt(roiInputs.hours.value);
+          const dealValue = parseInt(roiInputs.deal.value);
+      
+          // 2. Update Input Labels (Visuals)
+          roiLabels.hourly.innerText = hourlyRate;
+          roiLabels.hours.innerText = weeklyHours;
+          roiLabels.deal.innerText = dealValue;
+      
+          // --- CONSTANTS ---
+          const ULTRA_COST = 29;
+          const ULTRA_SCOUTS = 150; 
+          const MANUAL_LEADS_PER_HOUR = 4;
+          const WEEKS_PER_MONTH = 4;
+          const CONVERSION_RATE = 0.05; // 5% Interest rate
 
-    // 2. Update Input Labels
-    roiLabels.hourly.innerText = hourlyRate;
-    roiLabels.hours.innerText = weeklyHours;
-    roiLabels.deal.innerText = dealValue;
+          // --- CALCULATIONS ---
 
-    // --- CONSTANTS ---
-    const ULTRA_SCOUTS = 150; // The fix from before
-    const MANUAL_LEADS_PER_HOUR = 4;
-    const WEEKS_PER_MONTH = 4;
-    const CONVERSION_RATE = 0.05; // 5% Interest rate assumption
+          // A. Labor Savings (Defense)
+          const manualMonthlyHours = weeklyHours * WEEKS_PER_MONTH;
+          const manualMonthlyLeads = manualMonthlyHours * MANUAL_LEADS_PER_HOUR;
+          
+          // Cap scouts at 150 because Ultra provides 150.
+          const ultraEffectiveLeads = Math.min(manualMonthlyLeads, ULTRA_SCOUTS);
+          const hoursSavedByUltra = ultraEffectiveLeads / MANUAL_LEADS_PER_HOUR;
+          const laborValueSaved = hoursSavedByUltra * hourlyRate;
+          const netSavings = laborValueSaved - ULTRA_COST;
 
-    // --- CALCULATIONS ---
-    
-    // A. Labor Savings (The Defense)
-    const manualMonthlyHours = weeklyHours * WEEKS_PER_MONTH;
-    const manualMonthlyLeads = manualMonthlyHours * MANUAL_LEADS_PER_HOUR;
-    const ultraEffectiveLeads = Math.min(manualMonthlyLeads, ULTRA_SCOUTS);
-    const hoursSavedByUltra = ultraEffectiveLeads / MANUAL_LEADS_PER_HOUR;
-    const laborValueSaved = hoursSavedByUltra * hourlyRate;
-    const netSavings = laborValueSaved - ULTRA_COST;
+          // B. Pipeline Opportunity (Offense)
+          const pipelineValue = ULTRA_SCOUTS * CONVERSION_RATE * dealValue;
+          const totalImpact = netSavings + pipelineValue;
+      
+          // --- UPDATING THE UI (Purple Card) ---
+          
+          if(document.getElementById('result-total-impact')) {
+              document.getElementById('result-total-impact').innerText = Math.round(totalImpact).toLocaleString();
+          }
+          document.getElementById('result-value').innerText = Math.round(netSavings).toLocaleString();
+          
+          if(document.getElementById('result-pipeline')) {
+              document.getElementById('result-pipeline').innerText = Math.round(pipelineValue).toLocaleString();
+          }
+          
+          // --- UPDATING THE UI (Stats Grid - if present) ---
+          if(document.getElementById('res-hours-saved')) {
+             document.getElementById('res-hours-saved').innerText = Math.round(hoursSavedByUltra);
+          }
+          if(document.getElementById('res-labor-value')) {
+             document.getElementById('res-labor-value').innerText = Math.round(laborValueSaved).toLocaleString();
+          }
+      
+          // --- CHART LOGIC (Buying Power - Bottom Right Card) ---
+          
+          // 1. Calculate Cost per Lead
+          const manualCostPerLead = hourlyRate / MANUAL_LEADS_PER_HOUR;
+          const ultraCostPerLead = ULTRA_COST / ULTRA_SCOUTS;
 
-    // B. Pipeline Opportunity (The Offense)
-    // 150 Scouts * 5% Conv Rate * Deal Value
-    const pipelineValue = ULTRA_SCOUTS * CONVERSION_RATE * dealValue;
+          // 2. Calculate "Leads per $100" (The Buying Power)
+          const manualLeadsPer100 = 100 / manualCostPerLead;
+          const ultraLeadsPer100 = 100 / ultraCostPerLead; // Constant ~526
 
-    // C. Total Impact
-    const totalImpact = netSavings + pipelineValue;
-
-    // --- UPDATING THE UI ---
-    
-    // 1. New "Double Win" Displays
-    if(document.getElementById('result-total-impact')) {
-        document.getElementById('result-total-impact').innerText = Math.round(totalImpact).toLocaleString();
-    }
-    document.getElementById('result-value').innerText = Math.round(netSavings).toLocaleString();
-    
-    if(document.getElementById('result-pipeline')) {
-        document.getElementById('result-pipeline').innerText = Math.round(pipelineValue).toLocaleString();
-    }
-
-    // 2. Stats Grid (Existing bottom logic)
-    if(document.getElementById('res-hours-saved')) roiResults.hoursSaved.innerText = Math.round(hoursSavedByUltra);
-    if(document.getElementById('res-labor-value')) roiResults.laborValue.innerText = Math.round(laborValueSaved).toLocaleString();
-    
-    // --- CHART LOGIC ---
-    const manualCostPerLead = hourlyRate / MANUAL_LEADS_PER_HOUR;
-    const ultraCostPerLead = ULTRA_COST / ULTRA_SCOUTS;
-    
-    roiResults.manualCount.innerText = manualCostPerLead.toFixed(2);
-    roiResults.manualBar.style.width = `100%`;
-    const ultraBarPercentage = (ultraCostPerLead / manualCostPerLead) * 100;
-    document.getElementById('bar-ultra-fill').style.width = `${Math.max(1, ultraBarPercentage)}%`;
-    const efficiencyMultiplier = Math.round(manualCostPerLead / ultraCostPerLead);
-    roiResults.multiplier.innerText = `${efficiencyMultiplier}x More Efficient`;
-};
-
+          // 3. Render Text
+          if(document.getElementById('manual-leads-count')) {
+             document.getElementById('manual-leads-count').innerText = manualLeadsPer100.toFixed(1);
+          }
+          if(document.getElementById('ultra-leads-count')) {
+             document.getElementById('ultra-leads-count').innerText = Math.round(ultraLeadsPer100);
+          }
+          
+          // 4. Render Bars
+          // Ultra is the "Anchor" at 100% width. Manual is relative to Ultra.
+          const manualBarWidth = (manualLeadsPer100 / ultraLeadsPer100) * 100;
+          
+          // We clamp it to 1% minimum so it is always visible
+          if(document.getElementById('bar-manual-fill')) {
+              document.getElementById('bar-manual-fill').style.width = `${Math.max(1, manualBarWidth)}%`;
+          }
+          
+          // 5. Efficiency Multiplier
+          const efficiencyMultiplier = Math.round(ultraLeadsPer100 / manualLeadsPer100);
+          if(document.getElementById('multiplier-val')) {
+              document.getElementById('multiplier-val').innerText = efficiencyMultiplier;
+          }
+      };
       // Close on backdrop click
       if(roiModal) {
           roiModal.addEventListener('click', (e) => {
