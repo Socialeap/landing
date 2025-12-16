@@ -958,107 +958,89 @@
       <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
     </svg>
   </button>
-
 <script>
-  // ---------- LeadRadar Impact Calculator Logic ----------
-  // Philosophy: Value comes from relevance, focus, and time reclaimed — not lead volume.
-
-  const ULTRA_COST = 29; // monthly
-  const WEEKS_PER_MONTH = 4;
-
+(function () {
+  // ---------- HARD GUARD ----------
+  // If ROI modal does not exist, abort safely
   const roiModal = document.getElementById('roi-modal');
+  if (!roiModal) return;
 
-  const roiInputs = {
-    hourly: document.getElementById('input-hourly'),     // User's hourly value
-    hours: document.getElementById('input-hours'),       // Weekly time spent on low-quality networking
-    deal: document.getElementById('input-deal')          // Optional: avg value of a meaningful opportunity
+  // ---------- CONSTANTS ----------
+  const ULTRA_COST = 29;
+  const WEEKS_PER_MONTH = 4;
+  const NOISE_REDUCTION_RATE = 0.4;
+
+  // ---------- SAFE ELEMENT LOOKUPS ----------
+  function el(id) {
+    return document.getElementById(id) || null;
+  }
+
+  const inputs = {
+    hourly: el('input-hourly'),
+    hours: el('input-hours'),
+    deal: el('input-deal')
   };
 
-  const roiLabels = {
-    hourly: document.getElementById('val-hourly'),
-    hours: document.getElementById('val-hours'),
-    deal: document.getElementById('val-deal')
+  const labels = {
+    hourly: el('val-hourly'),
+    hours: el('val-hours'),
+    deal: el('val-deal')
   };
 
-  // Results
-  const roiResults = {
-    focusValue: document.getElementById('result-value'),
-    hoursSaved: document.getElementById('res-hours-saved'),
-    laborValue: document.getElementById('res-labor-value'),
-    multiplier: document.getElementById('multiplier-val')
+  const results = {
+    focusValue: el('result-value'),
+    hoursSaved: el('res-hours-saved'),
+    laborValue: el('res-labor-value'),
+    multiplier: el('multiplier-val')
   };
 
-  // ---------- Modal Controls ----------
-  window.openRoiCalculator = function() {
+  // ---------- MODAL CONTROLS ----------
+  window.openRoiCalculator = function () {
     roiModal.classList.remove('hidden');
-    calculateROI();
     document.body.style.overflow = 'hidden';
+    calculateROI();
   };
 
-  window.closeRoiCalculator = function() {
+  window.closeRoiCalculator = function () {
     roiModal.classList.add('hidden');
     document.body.style.overflow = '';
   };
 
-  // ---------- Core Calculation ----------
-  window.calculateROI = function() {
-    const hourlyRate = parseInt(roiInputs.hourly.value);
-    const weeklyNoiseHours = parseInt(roiInputs.hours.value);
-    const opportunityValue = parseInt(roiInputs.deal.value);
+  // ---------- CORE CALCULATION ----------
+  window.calculateROI = function () {
+    if (!inputs.hourly || !inputs.hours) return;
 
-    // Update labels
-    roiLabels.hourly.innerText = hourlyRate;
-    roiLabels.hours.innerText = weeklyNoiseHours;
-    roiLabels.deal.innerText = opportunityValue;
+    const hourlyRate = parseInt(inputs.hourly.value || 0, 10);
+    const weeklyNoiseHours = parseInt(inputs.hours.value || 0, 10);
 
-    /**
-     * ASSUMPTIONS (conservative, defensible):
-     * - LeadRadar helps reduce irrelevant networking time by ~40%
-     * - Remaining time is higher-quality, intentional interaction
-     */
-    const NOISE_REDUCTION_RATE = 0.4;
+    // Update visible labels (if present)
+    if (labels.hourly) labels.hourly.innerText = hourlyRate;
+    if (labels.hours) labels.hours.innerText = weeklyNoiseHours;
+    if (labels.deal && inputs.deal) labels.deal.innerText = inputs.deal.value || 0;
 
-    // Monthly time reclaimed
+    // Core math
     const monthlyNoiseHours = weeklyNoiseHours * WEEKS_PER_MONTH;
     const hoursReclaimed = Math.round(monthlyNoiseHours * NOISE_REDUCTION_RATE);
-
-    // Monetary value of focus reclaimed
     const focusValue = hoursReclaimed * hourlyRate;
+    const netValue = focusValue - ULTRA_COST;
 
-    // Net impact after Ultra cost
-    const netFocusValue = focusValue - ULTRA_COST;
+    const focusMultiplier = hoursReclaimed > 0
+      ? Math.max(1, Math.round(monthlyNoiseHours / hoursReclaimed))
+      : 1;
 
-    // Optional qualitative multiplier (decision velocity)
-    const focusMultiplier = Math.max(
-      1,
-      Math.round((monthlyNoiseHours / Math.max(hoursReclaimed, 1)))
-    );
-
-    // ---------- Update UI ----------
-    if (roiResults.hoursSaved) {
-      roiResults.hoursSaved.innerText = hoursReclaimed;
-    }
-
-    if (roiResults.laborValue) {
-      roiResults.laborValue.innerText = focusValue.toLocaleString();
-    }
-
-    if (roiResults.focusValue) {
-      roiResults.focusValue.innerText = netFocusValue.toLocaleString();
-    }
-
-    if (roiResults.multiplier) {
-      roiResults.multiplier.innerText = focusMultiplier;
-    }
+    // Update UI (only if elements exist)
+    if (results.hoursSaved) results.hoursSaved.innerText = hoursReclaimed;
+    if (results.laborValue) results.laborValue.innerText = focusValue.toLocaleString();
+    if (results.focusValue) results.focusValue.innerText = netValue.toLocaleString();
+    if (results.multiplier) results.multiplier.innerText = focusMultiplier;
   };
 
-  // Close modal on backdrop click
-  if (roiModal) {
-    roiModal.addEventListener('click', (e) => {
-      if (e.target === roiModal) window.closeRoiCalculator();
-    });
-    calculateROI();
-  }
+  // ---------- BACKDROP CLOSE ----------
+  roiModal.addEventListener('click', (e) => {
+    if (e.target === roiModal) window.closeRoiCalculator();
+  });
+
+})();
 </script>
 
 </body>
