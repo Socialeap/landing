@@ -456,7 +456,14 @@
         LeadRadar focuses on alignment and relevance — not just keywords or volume.
       </p>
     </div>
-
+    
+<div class="mt-12 fade-up text-center" style="transition-delay: 0.2s;">
+            <button id="toggle-leadradar-btn" class="cta-button bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg text-base sm:text-lg">
+                See LeadRadar Demo
+            </button>
+            <iframe id="leadradar-demo-iframe" src="https://socialeap.github.io/Saascontrolpanelwireframe/" class="w-full h-[820px] mt-6 rounded-xl border border-indigo-400/20 no-scrollbar-iframe" style="display: none;"></iframe>
+</div>
+    
     <div class="glass-card-pro p-5 sm:p-6 rounded-xl shadow-lg fade-up">
       <h3 class="card-heading text-base sm:text-xl font-bold mb-3 flex items-center gap-3">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -811,6 +818,19 @@
                 toggleDemoBtn.textContent = isHidden ? 'Hide LinkUp Demo' : 'See LinkUp Demo';
             });
         }
+
+      // --- 4b. LeadRadar Demo Toggle (New) ---
+        const toggleLeadRadarBtn = document.getElementById('toggle-leadradar-btn');
+        const leadRadarIframe = document.getElementById('leadradar-demo-iframe');
+
+        if (toggleLeadRadarBtn && leadRadarIframe) {
+            toggleLeadRadarBtn.addEventListener('click', () => {
+                const isHidden = leadRadarIframe.style.display === 'none';
+                leadRadarIframe.style.display = isHidden ? 'block' : 'none';
+                toggleLeadRadarBtn.textContent = isHidden ? 'Hide LeadRadar Demo' : 'See LeadRadar Demo';
+            });
+        }
+      
 
         // --- 5. Back to Top Button ---
         const backToTopBtn = document.getElementById('back-to-top');
