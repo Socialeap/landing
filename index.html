@@ -162,6 +162,7 @@
     .anchor-offset { scroll-margin-top: 120px; }
 
     /* Styles for Zig-Zag Flip Card Timeline */
+    /* UPDATED: Improved container and responsiveness */
     .timeline-container {
       position: relative;
       max-width: 1000px;
@@ -178,11 +179,13 @@
       margin-left: -1.5px;
       border-radius: 3px;
     }
+
+    /* UPDATED: Adjusted padding and layout */
     .timeline-item {
-      padding: 0 40px;
-      margin-bottom: 5px;
+      padding: 10px 40px;
       position: relative;
       width: 50%;
+      box-sizing: border-box;
     }
       .timeline-item::after {
       content: '';
@@ -201,10 +204,11 @@
     .timeline-item.right { left: 50%; }
     .timeline-item.right::after { left: -11px; }
 
+    /* UPDATED: Increased height from 120px to 280px */
     .flip-card-container {
       perspective: 1500px;
       width: 100%;
-      height: 120px;
+      height: 280px; 
     }
     .flipper {
       position: relative;
@@ -225,9 +229,19 @@
       border-radius: 1rem;
       display: flex;
       align-items: center;
+      box-sizing: border-box;
     }
     .card-back {
       transform: rotateY(180deg);
+      overflow-y: auto; /* Allow scrolling if content is very long */
+    }
+
+    /* NEW: Mobile Optimization */
+    @media (max-width: 768px) {
+      .timeline-container::after { left: 31px; }
+      .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+      .timeline-item.right { left: 0; }
+      .timeline-item.left::after, .timeline-item.right::after { left: 19px; }
     }
 
     #jotform-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 50; overflow: auto; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
@@ -725,47 +739,28 @@
       <section id="roadmap" class="anchor-offset mt-36 lg:mt-48 max-w-7xl mx-auto">
         <h2 class="text-2xl sm:text-4xl font-bold text-center mb-2 text-shadow fade-up">Hello! Road Map</h2>
         <p class="text-center text-blue-100 mb-10 fade-up" style="transition-delay: 0.1s;">What’s shipping next — and when. Click a card to learn more.</p>
+        
         <div class="timeline-container">
             <div class="timeline-item left"><div class="flip-card-container slide-in-left" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">MAR</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="card-heading font-semibold text-lg">Basic Email Signature Builder</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Basic Email Signature Builder</h3><p class="text-sm text-blue-100 mt-2">Craft clean, compatible signatures for Gmail and Outlook. Copy-paste ready with live preview.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 03/2025</span></div></div></div></div></div>
+            
             <div class="timeline-item right"><div class="flip-card-container slide-in-right" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">MAY</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="card-heading font-semibold text-lg">Dynamic Signature Builder</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Dynamic Signature Builder</h3><p class="text-sm text-blue-100 mt-2">Publish a live, shareable signature page with public viewing links.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 05/2025</span></div></div></div></div></div>
+            
             <div class="timeline-item left"><div class="flip-card-container slide-in-left" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">JUL</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="card-heading font-semibold text-lg">Engagement Features</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Engagement Features</h3><p class="text-sm text-blue-100 mt-2">Boost engagement with survey polls and organic sharing with QR+Social Share menus.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 07/2025</span></div></div></div></div></div>
+            
             <div class="timeline-item right"><div class="flip-card-container slide-in-right" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">SEP</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="card-heading font-semibold text-lg">Introduced Hello! LinkUp</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Introduced Hello! LinkUp</h3><p class="text-sm text-blue-100 mt-2">Finally! A smart Patent-Pending system to assess, filter, and recommend social connections for better alignment with your focus & interests.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 09/2025</span></div></div></div></div></div>
-            <div class="timeline-item left"><div class="flip-card-container slide-in-left" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">OCT</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="card-heading font-semibold text-lg">Public Launch Point</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Public Launch Point</h3><p class="text-sm text-blue-100 mt-2">Earmarked mid October to open Hello! to the public as a new, smarter networking & social marketing tool.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 10/2025</span></div></div></div></div></div>
-            <div class="timeline-item right"><div class="flip-card-container slide-in-right" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">NOV</span><span class="block text-green-300/80 text-sm font-semibold">'25</span></div><h3 class="card-heading font-semibold text-lg">Signature Spotlights</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Signature Spotlights</h3><p class="text-sm text-blue-100 mt-2">Curated gallery highlighting standout Signature Cards from the community.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 11/2025</span></div></div></div></div></div>
-           <div class="timeline-item left">
-  <div class="flip-card-container slide-in-left" tabindex="0" role="button">
-    <div class="flipper">
+            
+            <div class="timeline-item left"><div class="flip-card-container slide-in-left" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">JAN</span><span class="block text-green-300/80 text-sm font-semibold">'26</span></div><h3 class="card-heading font-semibold text-lg">Soft Launch</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Soft Launch</h3><p class="text-sm text-blue-100 mt-2">Earmarked January 2026 to open Hello! to the public as a new, smarter networking & social marketing tool.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 01/2026</span></div></div></div></div></div>
+            
+            <div class="timeline-item right"><div class="flip-card-container slide-in-right" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">FEB</span><span class="block text-green-300/80 text-sm font-semibold">'26</span></div><h3 class="card-heading font-semibold text-lg">LeadRadar Intelligence Launch</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading font-semibold text-lg">LeadRadar Intelligence Launch</h3><p class="text-sm text-blue-100 mt-2">Introduction of LeadRadar™ — a contextual intelligence layer designed to surface relevance, engagement, and opportunities worth acting on.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 02/2026</span></div></div></div></div></div>
 
-      <div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer">
-        <div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24">
-          <span class="text-green-300 font-bold text-2xl">FEB</span>
-          <span class="block text-green-300/80 text-sm font-semibold">'26</span>
-        </div>
-        <h3 class="card-heading font-semibold text-lg">
-          LeadRadar Intelligence Launch
-        </h3>
-      </div>
+            <div class="timeline-item left"><div class="flip-card-container slide-in-left" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">MAR</span><span class="block text-green-300/80 text-sm font-semibold">'26</span></div><h3 class="card-heading font-semibold text-lg">Signature Spotlights</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Signature Spotlights</h3><p class="text-sm text-blue-100 mt-2">Curated gallery highlighting standout Signature Cards from the community.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 03/2026</span></div></div></div></div></div>
 
-      <div class="card-back colored-panel p-4 flex flex-col justify-center text-left">
-        <div class="p-4">
-          <h3 class="card-heading font-semibold text-lg">
-            LeadRadar Intelligence Launch
-          </h3>
-          <p class="text-sm text-blue-100 mt-2">
-            Introduction of LeadRadar™ — a contextual intelligence layer designed to surface relevance,
-            engagement, and opportunities worth acting on, supported by daily Briefings.
-          </p>
-          <span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">
-            Target: 02/2026
-          </span>
-        </div>
-      </div>
+            <div class="timeline-item right"><div class="flip-card-container slide-in-right" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">APR</span><span class="block text-green-300/80 text-sm font-semibold">'26</span></div><h3 class="card-heading font-semibold text-lg">Hello! For Teams & Business</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Hello! For Teams & Business</h3><p class="text-sm text-blue-100 mt-2">Hello! is aiming to offer Hello! admin portals to businesses and organizations wishing to manage Signature Cards for their entire staff, teams, employee base, or associate members.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 04/2026</span></div></div></div></div></div>
 
-    </div>
-  </div>
-</div>
+            <div class="timeline-item left"><div class="flip-card-container slide-in-left" tabindex="0" role="button"><div class="flipper"><div class="card-front glass-card p-4 flex items-center gap-4 cursor-pointer"><div class="flex-shrink-0 text-center bg-indigo-900/50 rounded-lg p-3 w-24"><span class="text-green-300 font-bold text-2xl">MAY</span><span class="block text-green-300/80 text-sm font-semibold">'26</span></div><h3 class="card-heading font-semibold text-lg">Hello! Networking</h3></div><div class="card-back colored-panel p-4 flex flex-col justify-center text-left"><div class="p-4"><h3 class="card-heading text-lg font-bold">Hello! Networking</h3><p class="text-sm text-blue-100 mt-2">This next iteration will bring #tags and search functionality allowing Signature holders to be listed and found for LinkUp requests.</p><span class="inline-block mt-3 text-xs px-2 py-1 rounded bg-sky-400/20 text-sky-200 border border-sky-400/30 self-start">Target: 05/2026</span></div></div></div></div></div>
+
         </div>
-      </section>
+        </section>
 
     </div>
   </main>
