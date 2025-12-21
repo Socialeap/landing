@@ -162,7 +162,7 @@
     .anchor-offset { scroll-margin-top: 120px; }
 
     /* Styles for Zig-Zag Flip Card Timeline */
-    /* UPDATED: Increased max-width to 1280px for wider cards */
+    /* UPDATED: Increased max-width to 1280px for wide business card look */
     .timeline-container {
       position: relative;
       max-width: 1280px; 
@@ -180,9 +180,9 @@
       border-radius: 3px;
     }
 
-    /* UPDATED: Reduced side padding to 25px to allow card to be wider */
+    /* UPDATED: Adjusted padding to maximize card width */
     .timeline-item {
-      padding: 10px 25px;
+      padding: 10px 25px; 
       position: relative;
       width: 50%;
       box-sizing: border-box;
@@ -204,7 +204,7 @@
     .timeline-item.right { left: 50%; }
     .timeline-item.right::after { left: -11px; }
 
-    /* UPDATED: Height set to 220px for Business Card aspect ratio */
+    /* UPDATED: Fixed height at 220px to create "Business Card" rectangle shape */
     .flip-card-container {
       perspective: 1500px;
       width: 100%;
@@ -233,10 +233,10 @@
     }
     .card-back {
       transform: rotateY(180deg);
-      overflow-y: auto; /* Allow scrolling if content is very long */
+      overflow-y: auto; /* Safety scroll for small screens */
     }
 
-    /* NEW: Mobile Optimization */
+    /* Mobile Optimization: Stacks vertically on small screens */
     @media (max-width: 768px) {
       .timeline-container::after { left: 31px; }
       .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
