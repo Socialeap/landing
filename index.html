@@ -722,23 +722,13 @@
       </footer>
 
       <section id="roadmap" class="anchor-offset mt-36 lg:mt-48 text-center">
-        
-            <h2 class="text-2xl sm:text-4xl font-bold text-center mb-6 text-shadow fade-up">Hello! Road Map</h2>
-            <div class="w-full max-w-6xl mx-auto mt-12 fade-up">
-                <button id="toggle-roadmap-btn" class="cta-button bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg text-base sm:text-lg">
-                    See Road Map
-                </button>
-                <div id="roadmap-embed-container" style="display: none;" class="mt-6 w-full relative">
-                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.75rem; border: 1px solid rgba(129, 140, 248, 0.2);">
-                        <iframe 
-                            src="https://view.genially.com/6947786c1d9a2403ca9cca0d" 
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
-                            allowfullscreen="true">
-                        </iframe>
-                    </div>
-                </div>
-            </div>
-       
+        <h2 class="text-2xl sm:text-4xl font-bold text-center mb-6 text-shadow fade-up">Hello! Road Map</h2>
+        <div class="mt-12 fade-up">
+          <button id="toggle-roadmap-btn" class="cta-button bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg text-base sm:text-lg">
+            See Road Map
+          </button>
+          <iframe id="roadmap-embed-container" src="https://view.genially.com/6947786c1d9a2403ca9cca0d" class="w-full h-[820px] mt-6 rounded-xl border border-indigo-400/20 no-scrollbar-iframe" style="display: none;" allowfullscreen="true"></iframe>
+        </div>
       </section>
 
     </div>
@@ -840,12 +830,12 @@
 
         // --- 5. Road Map Toggle (New Logic) ---
         const toggleRoadmapBtn = document.getElementById('toggle-roadmap-btn');
-        const roadmapContainer = document.getElementById('roadmap-embed-container');
+        const roadmapIframe = document.getElementById('roadmap-embed-container');
 
-        if (toggleRoadmapBtn && roadmapContainer) {
+        if (toggleRoadmapBtn && roadmapIframe) {
             toggleRoadmapBtn.addEventListener('click', () => {
-                const isHidden = roadmapContainer.style.display === 'none';
-                roadmapContainer.style.display = isHidden ? 'block' : 'none';
+                const isHidden = roadmapIframe.style.display === 'none';
+                roadmapIframe.style.display = isHidden ? 'block' : 'none';
                 toggleRoadmapBtn.textContent = isHidden ? 'Hide Road Map' : 'See Road Map';
             });
         }
