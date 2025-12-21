@@ -162,10 +162,9 @@
     .anchor-offset { scroll-margin-top: 120px; }
 
     /* Styles for Zig-Zag Flip Card Timeline */
-    /* UPDATED: Increased max-width to 1280px for wide business card look */
     .timeline-container {
       position: relative;
-      max-width: 1280px; 
+      max-width: 1000px;
       margin: 0 auto;
     }
     .timeline-container::after {
@@ -179,13 +178,11 @@
       margin-left: -1.5px;
       border-radius: 3px;
     }
-
-    /* UPDATED: Adjusted padding to maximize card width */
     .timeline-item {
-      padding: 10px 25px; 
+      padding: 0 40px;
+      margin-bottom: 5px;
       position: relative;
       width: 50%;
-      box-sizing: border-box;
     }
       .timeline-item::after {
       content: '';
@@ -204,11 +201,10 @@
     .timeline-item.right { left: 50%; }
     .timeline-item.right::after { left: -11px; }
 
-    /* UPDATED: Fixed height at 220px to create "Business Card" rectangle shape */
     .flip-card-container {
       perspective: 1500px;
       width: 100%;
-      height: 220px; 
+      height: 120px;
     }
     .flipper {
       position: relative;
@@ -229,30 +225,14 @@
       border-radius: 1rem;
       display: flex;
       align-items: center;
-      box-sizing: border-box;
     }
     .card-back {
       transform: rotateY(180deg);
-      overflow-y: auto; /* Safety scroll for small screens */
     }
 
-    /* Mobile Optimization: Stacks vertically on small screens */
-    @media (max-width: 768px) {
-      .timeline-container::after { left: 31px; }
-      .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
-      .timeline-item.right { left: 0; }
-      .timeline-item.left::after, .timeline-item.right::after { left: 19px; }
-    }
-
-    /* MODAL STYLES */
-    #jotform-overlay, #roadmap-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 50; overflow: auto; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
-    #jotform-panel, #roadmap-panel { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.45); }
-    
-    #jotform-panel { width: min(880px, 94vw); }
+    #jotform-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 50; overflow: auto; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+    #jotform-panel { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.45); width: min(880px, 94vw); }
     #jotform-panel .frame-wrap { max-height: calc(100vh - 64px); }
-
-    /* Genially Modal Specifics */
-    #roadmap-panel { width: min(1200px, 94vw); top: 50px; bottom: 50px; display: flex; flex-direction: column; }
     
     #back-to-top {
       position: fixed;
@@ -421,7 +401,7 @@
         <p class="text-center max-w-3xl mx-auto mt-4 mb-12 text-sm sm:text-lg text-blue-100 fade-up">Unlock your Signature Card's interactive components to grow your brand</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 animate-stagger">
           <div class="glass-card-pro p-5 sm:p-6 rounded-xl shadow-lg fade-up"><h3 class="card-heading text-base sm:text-xl font-bold mb-3 flex items-center gap-3"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4"><animate attributeName="r" from="4" to="8" dur="1.5s" begin="0s" repeatCount="indefinite" /><animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite" /></circle><circle cx="12" cy="12" r="4" /></svg> Live Profile Sync</h3><p class="text-sm text-gray-200">Email signatures include a '🟢 Live' icon, linking recipients to your card for the latest info and interactive features.</p></div>
-        
+          <div class="glass-card-pro p-5 sm:p-6 rounded-xl shadow-lg fade-up"><h3 class="card-heading text-base sm:text-xl font-bold mb-3 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> No Branding But Yours</h3><p class="text-sm text-gray-200">Your signature is yours alone. We never add our own branding or "Sent with" links to your final signature card.</p></div>
           <div class="glass-card-pro p-5 sm:p-6 rounded-xl shadow-lg fade-up"><h3 class="card-heading text-base sm:text-xl font-bold mb-3 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg> Viewer Engagement Stats<sup class="text-indigo-400">*</sup></h3><p class="text-sm text-gray-200">Unlock statistics to see how your audience interacts with your card, including views, clicks, and social shares.</p></div>
           <div class="glass-card-pro p-5 sm:p-6 rounded-xl shadow-lg fade-up"><h3 class="card-heading text-base sm:text-xl font-bold mb-3 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V6a2 2 0 012-2h2.586a1 1 0 01.707.293l1.414 1.414a1 1 0 00.707.293H17z" /></svg> Interactive Polls<sup class="text-indigo-400">*</sup></h3><p class="text-sm text-gray-200">Boost engagement with survey polls and organic sharing with QR+Social Share menus.</p></div>
           <div class="glass-card-pro p-5 sm:p-6 rounded-xl shadow-lg fade-up"><h3 class="card-heading text-base sm:text-xl font-bold mb-3 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367 2.684z" /></svg> Easy Social Sharing<sup class="text-indigo-400">*</sup></h3><p class="text-sm text-gray-200">Your public signature page includes a share menu, making it simple for viewers to share your card across their networks.</p></div>
@@ -742,11 +722,24 @@
         <p class="text-sm text-gray-400">* Indicates a Pro Plan feature.</p>
       </footer>
 
-      <section id="roadmap" class="anchor-offset mt-36 lg:mt-48 max-w-7xl mx-auto text-center">
-        <h2 class="text-2xl sm:text-4xl font-bold text-center mb-6 text-shadow fade-up">Hello! Road Map</h2>
-        <button id="open-roadmap-btn" class="cta-button bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg text-base sm:text-lg fade-up">
-            Road Map
-        </button>
+      <section id="roadmap" class="anchor-offset mt-36 lg:mt-48 text-center">
+        <div class="container mx-auto px-4 sm:px-6">
+            <h2 class="text-2xl sm:text-4xl font-bold text-center mb-6 text-shadow fade-up">Hello! Road Map</h2>
+            <div class="w-full max-w-6xl mx-auto mt-12 fade-up">
+                <button id="toggle-roadmap-btn" class="cta-button bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg text-base sm:text-lg">
+                    See Road Map
+                </button>
+                <div id="roadmap-embed-container" style="display: none;" class="mt-6 w-full relative">
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.75rem; border: 1px solid rgba(129, 140, 248, 0.2);">
+                        <iframe 
+                            src="https://view.genially.com/6947786c1d9a2403ca9cca0d" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                            allowfullscreen="true">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
       </section>
 
     </div>
@@ -761,17 +754,6 @@
       </div>
       <div class="mt-6 rounded-lg overflow-hidden border border-white/20 frame-wrap">
         <iframe id="jotform-iframe" class="w-full" style="height: 860px;" src="https://form.jotform.com/251506550306045" frameborder="0" title="Beta Adopter and Waiting List Form" allowtransparency="true"></iframe>
-      </div>
-    </div>
-  </div>
-
-  <div id="roadmap-overlay" aria-hidden="true">
-    <div id="roadmap-panel" class="modal-panel no-scrollbar p-1 sm:p-2">
-      <button id="close-roadmap-btn" class="absolute top-3 right-3 text-gray-300 hover:text-white transition-colors z-50" aria-label="Close"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
-      <div class="rounded-lg overflow-hidden border border-white/20 w-full h-full">
-         <div style="position: relative; padding-bottom: 56.25%; padding-top: 0; height: 0;"> 
-             <iframe frameborder="0" width="1200" height="675" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://view.genially.com/6947786c1d9a2403ca9cca0d" type="text/html" allowscriptaccess="always" allowfullscreen="true" scrolling="yes" allownetworking="all"></iframe> 
-         </div> 
       </div>
     </div>
   </div>
@@ -833,34 +815,7 @@
             });
         }
 
-        // --- 3. Modal Logic (Road Map) ---
-        const roadmapModal = document.getElementById('roadmap-overlay');
-        const openRoadmapBtn = document.getElementById('open-roadmap-btn');
-        const closeRoadmapBtn = document.getElementById('close-roadmap-btn');
-
-        if (roadmapModal && openRoadmapBtn) {
-            openRoadmapBtn.addEventListener('click', () => {
-                roadmapModal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            });
-
-            if (closeRoadmapBtn) {
-                closeRoadmapBtn.addEventListener('click', () => {
-                    roadmapModal.style.display = 'none';
-                    document.body.style.overflow = '';
-                });
-            }
-
-            roadmapModal.addEventListener('click', (e) => {
-                if (e.target === roadmapModal) {
-                    roadmapModal.style.display = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-        }
-
-
-        // --- 4. LinkUp Demo Toggle ---
+        // --- 3. LinkUp Demo Toggle ---
         const toggleDemoBtn = document.getElementById('toggle-demo-btn');
         const demoIframe = document.getElementById('linkup-demo-iframe');
 
@@ -872,7 +827,7 @@
             });
         }
 
-      // --- 4b. LeadRadar Demo Toggle (New) ---
+        // --- 4. LeadRadar Demo Toggle ---
         const toggleLeadRadarBtn = document.getElementById('toggle-leadradar-btn');
         const leadRadarIframe = document.getElementById('leadradar-demo-iframe');
 
@@ -883,9 +838,21 @@
                 toggleLeadRadarBtn.textContent = isHidden ? 'Hide LeadRadar Demo' : 'See LeadRadar Demo';
             });
         }
+
+        // --- 5. Road Map Toggle (New Logic) ---
+        const toggleRoadmapBtn = document.getElementById('toggle-roadmap-btn');
+        const roadmapContainer = document.getElementById('roadmap-embed-container');
+
+        if (toggleRoadmapBtn && roadmapContainer) {
+            toggleRoadmapBtn.addEventListener('click', () => {
+                const isHidden = roadmapContainer.style.display === 'none';
+                roadmapContainer.style.display = isHidden ? 'block' : 'none';
+                toggleRoadmapBtn.textContent = isHidden ? 'Hide Road Map' : 'See Road Map';
+            });
+        }
       
 
-        // --- 5. Back to Top Button ---
+        // --- 6. Back to Top Button ---
         const backToTopBtn = document.getElementById('back-to-top');
 
         if (backToTopBtn) {
