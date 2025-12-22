@@ -746,40 +746,113 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
 
-        // --- 0. Anchor/Nav Scroll Fix (iframe-safe; preserves layout; no visual changes) ---
-        // This keeps your existing fixed header + pt-32 spacing untouched, and makes in-page nav reliably scroll.
+        // --- 0. Wix-Compatible Anchor Navigation Fix ---
+        // Wix intercepts anchor link clicks and blocks native hash navigation.
+        // This solution intercepts clicks in the capture phase (before Wix) and manually scrolls.
         const headerEl = document.getElementById('page-header');
 
         function scrollToId(id) {
             const target = document.getElementById(id);
-            if (!target) return false;
+            if (!target) {
+                console.warn(`Target element with id "${id}" not found`);
+                return false;
+            }
 
+            // Calculate header height dynamically (accounts for responsive changes)
             const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
-            const y = target.getBoundingClientRect().top + window.pageYOffset - headerH - 24; // 24px buffer
-            window.scrollTo({ top: y, behavior: 'smooth' });
+            
+            // Get target position relative to document
+            const targetRect = target.getBoundingClientRect();
+            const targetTop = targetRect.top + window.pageYOffset;
+            
+            // Calculate final scroll position: target position minus header height minus buffer
+            const scrollOffset = headerH + 24; // 24px buffer for visual spacing
+            const finalY = Math.max(0, targetTop - scrollOffset);
+            
+            // Perform smooth scroll
+            window.scrollTo({ 
+                top: finalY, 
+                behavior: 'smooth' 
+            });
 
-            // Update the hash without triggering native jump behavior.
-            history.pushState(null, '', `#${id}`);
+            // Update URL hash without triggering native jump (using replaceState to avoid history entry)
+            try {
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState(null, '', `#${id}`);
+                }
+            } catch (e) {
+                // Fallback if replaceState fails (shouldn't happen, but defensive)
+                console.warn('Could not update URL hash:', e);
+            }
+            
             return true;
         }
 
-        // Intercept header hash links only (keeps other links/iframes unaffected)
+        // Intercept ALL anchor link clicks in the header using CAPTURE phase
+        // This ensures we catch the event before Wix's event handlers can block it
+        // Using capture phase (true) means our handler runs BEFORE Wix's handlers
+        
+        // Primary: Direct listeners on header anchor links (capture phase)
         const headerNav = headerEl ? headerEl.querySelectorAll('a[href^="#"]') : [];
-        headerNav.forEach(a => {
-            a.addEventListener('click', (e) => {
-                const href = a.getAttribute('href') || '';
+        headerNav.forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href') || '';
                 const id = href.replace('#', '').trim();
+                
                 if (!id) return;
+                
+                // Prevent default behavior immediately
                 e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                // Perform manual scroll
                 scrollToId(id);
-            });
+            }, true); // true = use capture phase (runs before Wix handlers)
         });
 
-        // If page loads with a hash, scroll to it reliably (after layout settles)
-        if (location.hash && location.hash.length > 1) {
-            const initialId = location.hash.slice(1);
-            setTimeout(() => { scrollToId(initialId); }, 50);
+        // Fallback: Document-level capture listener for header links
+        // This catches clicks even if Wix modifies the DOM or adds wrappers after page load
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('a[href^="#"]');
+            if (!target) return;
+            
+            // Only handle links within the header navigation
+            const headerEl = document.getElementById('page-header');
+            if (!headerEl || !headerEl.contains(target)) return;
+            
+            const href = target.getAttribute('href') || '';
+            const id = href.replace('#', '').trim();
+            if (!id) return;
+            
+            // Prevent default and stop all propagation
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            // Perform manual scroll
+            scrollToId(id);
+        }, true); // Capture phase - runs before Wix can intercept
+
+        // Handle initial page load with hash (after layout settles)
+        function handleInitialHash() {
+            if (location.hash && location.hash.length > 1) {
+                const initialId = location.hash.slice(1);
+                // Use multiple timeouts to ensure layout is complete
+                setTimeout(() => {
+                    scrollToId(initialId);
+                }, 100);
+                setTimeout(() => {
+                    scrollToId(initialId);
+                }, 500);
+            }
         }
+        
+        // Run on DOMContentLoaded
+        handleInitialHash();
+        
+        // Also run on window load (in case content loads dynamically)
+        window.addEventListener('load', handleInitialHash);
 
         // --- 1. Animation Observer (Fade-up / Slide-in) ---
         // This makes elements with opacity:0 visible when they enter the viewport.
