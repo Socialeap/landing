@@ -303,7 +303,8 @@
 
 <body class="dark app-page-bg">
 
-<header id="page-header" class="app-header-gradient fixed top-0 z-30 w-full">
+
+<header id="page-header" class="app-header-gradient sticky top-0 z-30 w-full">
   <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
     <div class="flex items-center gap-3 sm:gap-4">
       <div class="flex flex-col">
@@ -317,10 +318,7 @@
       <a href="#use-cases" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Use Cases</a>
       <a href="#pricing" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Pricing</a>
       <a href="#ultra-plan" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Ultra</a>
-
-      <!-- UPDATED: Road Map now links to the separate Wix page (break out of embed) -->
-      <a href="https://www.socialeap.net/hello-road-map" target="_top" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Road Map</a>
-
+      <a href="https://www.socialeap.net/hello-road-map" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Road Map</a>
       <a href="https://www.socialeap.net/hello-tips" target="_blank" rel="noopener" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">Tips</a>
       <a href="https://socialeap.github.io/digital-presence/" target="_blank" rel="noopener" class="text-sm font-medium text-gray-300 hover:text-sky-300 transition-colors">White Paper</a>
     </div>
@@ -862,20 +860,7 @@
             });
         }
 
-        // --- 5. Road Map Toggle (New Logic) ---
-        const toggleRoadmapBtn = document.getElementById('toggle-roadmap-btn');
-        const roadmapIframe = document.getElementById('roadmap-embed-container');
-
-        if (toggleRoadmapBtn && roadmapIframe) {
-            toggleRoadmapBtn.addEventListener('click', () => {
-                const isHidden = roadmapIframe.style.display === 'none';
-                roadmapIframe.style.display = isHidden ? 'block' : 'none';
-                toggleRoadmapBtn.textContent = isHidden ? 'Hide Road Map' : 'See Road Map';
-            });
-        }
-      
-
-        // --- 6. Back to Top Button ---
+        // --- 5. Back to Top Button ---
         const backToTopBtn = document.getElementById('back-to-top');
 
         if (backToTopBtn) {
