@@ -245,7 +245,7 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      display: flex;
+      display: none; /* Hidden by default */
       align-items: center;
       justify-content: center;
       background: hsl(var(--primary) / 0.4);
@@ -253,11 +253,23 @@
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid hsl(var(--border) / 0.2);
       color: white;
-      transition: transform 0.3s ease, background-color 0.3s ease;
+      transition: transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    #back-to-top.visible {
+      display: flex;
+      opacity: 1;
+      visibility: visible;
     }
     #back-to-top:hover {
       background: hsl(var(--primary) / 0.7);
       transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+    #back-to-top:active {
+      transform: scale(0.95);
     }
     
     /* --- ANIMATION STYLES --- */
@@ -737,7 +749,7 @@
     </div>
   </div>
 
-  <button id="back-to-top" title="Go to top">
+  <button id="back-to-top" title="Go to top" aria-label="Scroll to top">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
       <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
     </svg>
@@ -748,110 +760,214 @@
 
         // --- 0. Wix-Compatible Anchor Navigation Fix ---
         // Wix intercepts anchor link clicks and blocks native hash navigation.
-        // This solution intercepts clicks in the capture phase (before Wix) and manually scrolls.
+        // This solution uses multiple strategies to ensure scrolling works.
+        
         const headerEl = document.getElementById('page-header');
-
+        
+        // Simplified, reliable scroll function using scrollIntoView with offset
         function scrollToId(id) {
             const target = document.getElementById(id);
             if (!target) {
-                console.warn(`Target element with id "${id}" not found`);
                 return false;
             }
 
-            // Calculate header height dynamically (accounts for responsive changes)
+            // Calculate header height
             const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
+            const offset = headerH + 24;
             
-            // Get target position relative to document
-            const targetRect = target.getBoundingClientRect();
-            const targetTop = targetRect.top + window.pageYOffset;
+            // Method 1: Use scrollIntoView then adjust (most compatible)
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             
-            // Calculate final scroll position: target position minus header height minus buffer
-            const scrollOffset = headerH + 24; // 24px buffer for visual spacing
-            const finalY = Math.max(0, targetTop - scrollOffset);
-            
-            // Perform smooth scroll
-            window.scrollTo({ 
-                top: finalY, 
-                behavior: 'smooth' 
+            // Immediately adjust for header offset
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    const targetRect = target.getBoundingClientRect();
+                    const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                    const targetTop = targetRect.top + currentScroll;
+                    const scrollTo = Math.max(0, targetTop - offset);
+                    
+                    // Scroll to adjusted position
+                    window.scrollTo({
+                        top: scrollTo,
+                        behavior: 'smooth'
+                    });
+                });
             });
-
-            // Update URL hash without triggering native jump (using replaceState to avoid history entry)
+            
+            // Method 2: Direct calculation (backup)
+            setTimeout(() => {
+                const targetRect = target.getBoundingClientRect();
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                const targetTop = targetRect.top + currentScroll;
+                const scrollTo = Math.max(0, targetTop - offset);
+                
+                window.scrollTo({
+                    top: scrollTo,
+                    behavior: 'smooth'
+                });
+            }, 100);
+            
+            // Update URL hash
             try {
                 if (window.history && window.history.replaceState) {
                     window.history.replaceState(null, '', `#${id}`);
                 }
             } catch (e) {
-                // Fallback if replaceState fails (shouldn't happen, but defensive)
-                console.warn('Could not update URL hash:', e);
+                // Silent fail
             }
             
             return true;
         }
 
-        // Intercept ALL anchor link clicks in the header using CAPTURE phase
-        // This ensures we catch the event before Wix's event handlers can block it
-        // Using capture phase (true) means our handler runs BEFORE Wix's handlers
-        
-        // Primary: Direct listeners on header anchor links (capture phase)
-        const headerNav = headerEl ? headerEl.querySelectorAll('a[href^="#"]') : [];
-        headerNav.forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const href = this.getAttribute('href') || '';
+        // Aggressive event interception - replace href with onclick to bypass Wix
+        function setupAnchorNavigation() {
+            if (!headerEl) return;
+            
+            const headerNav = headerEl.querySelectorAll('a[href^="#"]');
+            headerNav.forEach(anchor => {
+                const href = anchor.getAttribute('href') || '';
                 const id = href.replace('#', '').trim();
-                
                 if (!id) return;
                 
-                // Prevent default behavior immediately
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
+                // Store original href for accessibility
+                anchor.setAttribute('data-href', href);
                 
-                // Perform manual scroll
-                scrollToId(id);
-            }, true); // true = use capture phase (runs before Wix handlers)
-        });
-
-        // Fallback: Document-level capture listener for header links
-        // This catches clicks even if Wix modifies the DOM or adds wrappers after page load
+                // Replace href with javascript:void(0) to prevent Wix from intercepting
+                anchor.setAttribute('href', 'javascript:void(0)');
+                
+                // Add direct onclick handler (harder for Wix to intercept)
+                anchor.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    scrollToId(id);
+                    return false;
+                };
+                
+                // Also add event listeners as backup (capture phase)
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    scrollToId(id);
+                    return false;
+                }, true);
+            });
+        }
+        
+        // Strategy 2: Document-level capture listener (catches everything)
         document.addEventListener('click', function(e) {
-            const target = e.target.closest('a[href^="#"]');
-            if (!target) return;
+            // Check if clicked element or its parent is an anchor with hash
+            let target = e.target;
+            let anchor = null;
             
-            // Only handle links within the header navigation
-            const headerEl = document.getElementById('page-header');
-            if (!headerEl || !headerEl.contains(target)) return;
+            // Walk up the DOM tree to find anchor
+            while (target && target !== document.body) {
+                if (target.tagName === 'A' && target.getAttribute('href') && target.getAttribute('href').startsWith('#')) {
+                    anchor = target;
+                    break;
+                }
+                target = target.parentElement;
+            }
             
-            const href = target.getAttribute('href') || '';
+            if (!anchor) return;
+            
+            // Check if it's in the header
+            if (!headerEl || !headerEl.contains(anchor)) return;
+            
+            const href = anchor.getAttribute('href') || '';
             const id = href.replace('#', '').trim();
             if (!id) return;
             
-            // Prevent default and stop all propagation
+            // Aggressively prevent default
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
             
-            // Perform manual scroll
-            scrollToId(id);
-        }, true); // Capture phase - runs before Wix can intercept
-
-        // Handle initial page load with hash (after layout settles)
+            // Perform scroll
+            setTimeout(() => scrollToId(id), 10);
+            
+            return false;
+        }, true); // Capture phase
+        
+        // Strategy 3: Override anchor behavior using mousedown (fires before click)
+        document.addEventListener('mousedown', function(e) {
+            let target = e.target;
+            let anchor = null;
+            
+            while (target && target !== document.body) {
+                if (target.tagName === 'A' && target.getAttribute('href') && target.getAttribute('href').startsWith('#')) {
+                    anchor = target;
+                    break;
+                }
+                target = target.parentElement;
+            }
+            
+            if (!anchor) return;
+            
+            if (!headerEl || !headerEl.contains(anchor)) return;
+            
+            const href = anchor.getAttribute('href') || '';
+            const id = href.replace('#', '').trim();
+            if (!id) return;
+            
+            // Prevent the click from even happening
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Scroll immediately on mousedown
+            setTimeout(() => scrollToId(id), 10);
+        }, true);
+        
+        // Initialize immediately and multiple times to catch Wix modifications
+        setupAnchorNavigation();
+        setTimeout(setupAnchorNavigation, 50);
+        setTimeout(setupAnchorNavigation, 100);
+        setTimeout(setupAnchorNavigation, 300);
+        setTimeout(setupAnchorNavigation, 500);
+        setTimeout(setupAnchorNavigation, 1000);
+        
+        // Watch for DOM changes and re-setup if Wix modifies anchors
+        if (headerEl) {
+            const observer = new MutationObserver(function(mutations) {
+                let shouldResetup = false;
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'href') {
+                        shouldResetup = true;
+                    }
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        shouldResetup = true;
+                    }
+                });
+                if (shouldResetup) {
+                    setTimeout(setupAnchorNavigation, 10);
+                }
+            });
+            
+            observer.observe(headerEl, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['href', 'onclick']
+            });
+        }
+        
+        // Also re-setup on window load
+        window.addEventListener('load', function() {
+            setTimeout(setupAnchorNavigation, 100);
+            setTimeout(setupAnchorNavigation, 500);
+        });
+        
+        // Handle initial page load with hash
         function handleInitialHash() {
             if (location.hash && location.hash.length > 1) {
                 const initialId = location.hash.slice(1);
-                // Use multiple timeouts to ensure layout is complete
-                setTimeout(() => {
-                    scrollToId(initialId);
-                }, 100);
-                setTimeout(() => {
-                    scrollToId(initialId);
-                }, 500);
+                setTimeout(() => scrollToId(initialId), 200);
+                setTimeout(() => scrollToId(initialId), 600);
             }
         }
         
-        // Run on DOMContentLoaded
         handleInitialHash();
-        
-        // Also run on window load (in case content loads dynamically)
         window.addEventListener('load', handleInitialHash);
 
         // --- 1. Animation Observer (Fade-up / Slide-in) ---
@@ -937,22 +1053,51 @@
         const backToTopBtn = document.getElementById('back-to-top');
 
         if (backToTopBtn) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    backToTopBtn.style.display = 'flex';
+            // Function to show/hide button based on scroll position
+            function toggleBackToTopButton() {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                
+                if (scrollY > 300) {
+                    backToTopBtn.classList.add('visible');
                 } else {
-                    backToTopBtn.style.display = 'none';
+                    backToTopBtn.classList.remove('visible');
+                }
+            }
+
+            // Listen to scroll events (with throttling for performance)
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                scrollTimeout = setTimeout(toggleBackToTopButton, 10);
+            }, { passive: true });
+
+            // Click handler - scroll to top smoothly
+            backToTopBtn.addEventListener('click', () => {
+                // Use multiple methods for maximum compatibility (especially in Wix embeds)
+                if (window.scrollTo) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else if (document.documentElement.scrollTo) {
+                    document.documentElement.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Fallback for older browsers
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
                 }
             });
 
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-            // Initial check
-            backToTopBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+            // Initial check on page load
+            toggleBackToTopButton();
+            
+            // Also check after a short delay (in case content loads dynamically)
+            setTimeout(toggleBackToTopButton, 100);
         }
     });
   </script>
