@@ -316,6 +316,27 @@
 
 <body class="dark app-page-bg">
 
+<!-- Waiting List CTA hardening: guarantees every .external-cta-link anchor opens
+     its href in a new tab and prevents any legacy modal/popup handler from
+     hijacking the click. Scoped strictly to .external-cta-link; nothing else is affected. -->
+<script>
+  (function () {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      var link = (t && t.closest) ? t.closest('a.external-cta-link') : null;
+      if (!link) return;
+      // Stop any other click handler (legacy modal/popup, embed scripts) from running.
+      e.stopImmediatePropagation();
+      // Respect power-user intents (modifier keys / non-left click) — let the browser handle them.
+      if ((e.button && e.button !== 0) || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      // Deterministically open the destination in a new tab.
+      e.preventDefault();
+      var url = link.getAttribute('href');
+      if (url) window.open(url, '_blank', 'noopener');
+    }, true); // capture phase, registered before other scripts attach their listeners
+  })();
+</script>
+
 
 <header id="page-header" class="app-header-gradient sticky top-0 z-30 w-full">
   <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
